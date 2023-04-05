@@ -41,14 +41,13 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 
 ## Create your first Azure Function on Azure Container Apps
 ## In this section:
--  **Prerequisites**
--  **Create a local function project**
--  **Build container image and test locally**
--  **Push the image to Docker Hub/Azure Container Registry**
--  **Create an Azure Container Apps Environment**
--  **Create Azure resources**
--  **Invoke the function on Azure** 
--  **Next Steps**
+-  [**Prerequisites**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#prerequisites)
+-  [**Create a local function project**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-the-local-function-project-c-isolated---http-trigger)
+-  [**Build container image and test locally**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#build-the-container-image-and-test-locally)
+-  [**Push the image to Docker Hub/Azure Container Registry**](
+-  [**Create Azure resources**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-azure-resources)
+-  [**Invoke the function on Azure** ](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#invoke-the-function-on-azure)
+-  [**Next Steps**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#next-steps)
 
 ## Prerequisites
 
@@ -110,6 +109,8 @@ func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
 The Dockerfile in the project root describes the minimum required environment to run the function app in a container. The complete list of supported base images for Azure Functions is documented above as **Host images** in the pre-requisites section or can be found in the [Azure Functions Base by Microsoft \| Docker
 Hub](https://hub.docker.com/_/microsoft-azure-functions-base)
 
+**Build and Push using Docker:**
+
 1\. In the root project folder, run the [docker build](https://docs.docker.com/engine/reference/commandline/build/) command, and provide a name, azurefunctionsimage, and tag, v1.0.0.
 The following command builds the Docker image for the container.
 ```sh
@@ -128,44 +129,42 @@ Again, replace <DOCKER_ID with your Docker ID and adding the ports argument, 
 
 4\. After you've verified the function app in the container, stop docker with **Ctrl**+**C**.
 
-**Build and Push using Docker:**
-
 Docker Hub is a container registry that hosts images and provides image and container services. To share your image, which includes deploying to Azure, you must push it to a registry.
 **Docker login**
-1\.  If you haven\'t already signed in to Docker, do so with the [docker login](https://docs.docker.com/engine/reference/commandline/login/) command, replacing  <docker_id> with your Docker ID. This command prompts you for your username and password. A "Login Succeeded" message confirms that you\'re signed in.
+5\.  If you haven\'t already signed in to Docker, do so with the [docker login](https://docs.docker.com/engine/reference/commandline/login/) command, replacing  <docker_id> with your Docker ID. This command prompts you for your username and password. A "Login Succeeded" message confirms that you\'re signed in.
 
-2\. After you\'ve signed in, push the image to Docker Hub by using the [docker push](https://docs.docker.com/engine/reference/commandline/push/) command, again replacing <docker_id> with your Docker ID.
+6\. After you\'ve signed in, push the image to Docker Hub by using the [docker push](https://docs.docker.com/engine/reference/commandline/push/) command, again replacing <docker_id> with your Docker ID.
 ```sh
-docker push \<docker_id\>/azurefunctionsimage:v1.0.0
+docker push <docker_id>/azurefunctionsimage:v1.0.0
 ```
- 3\. Depending on your network speed, pushing the image the first time might take a few minutes (pushing subsequent changes is much faster). While you\'re waiting, you can proceed to the next section and create Azure resources in another terminal.
+ 7\. Depending on your network speed, pushing the image the first time might take a few minutes (pushing subsequent changes is much faster). While you\'re waiting, you can proceed to the next section and create Azure resources in another terminal.
 
 **Build and Push using ACR (Azure Container Registry)**
 
-Please make sure you have an [ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) repository created by following the steps mentioned in the link. Azure Container Registry is a private registry service for building, storing,and managing container images and related artifacts.
+You can build and deploy functions on Azure container apps using ACR as well. Please make sure you have an [ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) repository created by following the steps mentioned in the link. Azure Container Registry is a private registry service for building, storing,and managing container images and related artifacts.
 
-1\. Login to the registry:
+1\. Login to the registry
 
 Before pushing and pulling container images, you must log in to the registry. To do so, use the [az acr login](https://learn.microsoft.com/enus/cli/azure/acr#az_acr_login) command. Specify only the registry resource name when logging in with the Azure CLI. Don\'t use the fully qualified login server name.
 
 ```sh
-az acr login \--name \<registry-name\>
+az acr login --name <registry-name>
 ```
 
 2\. Build and Push to the registry
 
-Before you can push an image to your registry, you must tag it with the  fully qualified name of your registry login server. The login server name is in the format *\<registry-name\>.azurecr.io* (must be all lowercase), for example, *mycontainerregistry.azurecr.io*.
+Before you can push an image to your registry, you must tag it with the fully qualified name of your registry login server. The login server name is in the format *\<registry-name\>.azurecr.io* (must be all lowercase), for example, *mycontainerregistry.azurecr.io*.
 Tag the image using the [docker tag](https://docs.docker.com/engine/reference/commandline/tag/) command.
 Replace <login-server> with the login server name of your ACR instance.
 
 ```sh
-  docker tag <docker_id>/azurefunctionsimage:v1.0.0 <login-server>/azurefunctionsimage:v1**
+  docker tag <docker_id>/azurefunctionsimage:v1.0.0 <login-server>/azurefunctionsimage:v1
   ```
 
 The following command builds the image, but pushes it to your container registry if the build is successful.
 
 ```sh
-  az acr build \--registry \$ACR_NAME \--image azurefunctionsimage:v1 .
+  az acr build --registry $ACR_NAME --image azurefunctionsimage:v1 .
 ```
 
 ## Create Azure resources
@@ -185,11 +184,11 @@ az account set -subscription | -s <subscription_name>
 
 az upgrade
 
-az extension add \--name containerapp \--upgrade
+az extension add --name containerapp --upgrade
 
-az provider register \--namespace Microsoft.App
+az provider register --namespace Microsoft.App
 
-az provider register \--namespace Microsoft.OperationalInsights
+az provider register --namespace Microsoft.OperationalInsights
 ```
 ---
 
@@ -198,20 +197,21 @@ az provider register \--namespace Microsoft.OperationalInsights
 Create an environment with an auto-generated Log Analytics workspace.
 
 ```sh
-  az containerapp env create -n MyContainerappEnvironment -g MyResourceGroup \\ \--location northeurope
+  az containerapp env create -n MyContainerappEnvironment -g MyResourceGroup --location northeurope
   ```
 3\.  Create Storage account
 
 Use the [az storage account create](https://learn.microsoft.com/en-us/cli/azure/storage/account#az-storage-account-create) command to create a general-purpose storage account in your resource group and region:
 
 ```sh
-az storage account create \--name \<STORAGE_NAME\> \--location northeurope \\ \--resource-group MyResourceGroup \--sku Standard_LRS
+az storage account create --name <STORAGE_NAME> --location northeurope --resource-group MyResourceGroup --sku Standard_LRS
   ```
-Replace \<STORAGE_NAME\> with a name that is appropriate to you and unique in Azure Storage. Names must contain three to 24 characters numbers and lowercase letters only. Standard_LRS specifies a general-purpose account, which is [supported by Functions](https://learn.microsoft.com/en-us/azure/azure-functions/storage considerations#storage-account-requirements). The --location value is a standard Azure region.
+Replace <STORAGE_NAME> with a name that is appropriate to you and unique in Azure Storage. Names must contain three to 24 characters numbers and lowercase letters only. Standard_LRS specifies a general-purpose account, which is [supported by Functions](https://learn.microsoft.com/en-us/azure/azure-functions/storage considerations#storage-account-requirements). The --location value is a standard Azure region.
 
-### Create the function app
-
-Run the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/functionapp#az-functionapp-create) command to create a new function app in the new managed environment backed by azure container apps.
+## Create the function app
+ 
+ Run the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/functionapp#az-functionapp-create) command to create a new function app in the new managed environment backed by azure container apps.
+ 
 ----
 > Note: **If you wish to use the quick start demo Http trigger sample you can include the below image url for --image parameter(this is a
 publicly accessible image so username/password is not required)
@@ -232,7 +232,7 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 In this example, replace **MyContainerappEnvironment** with the Azure container apps environment name. Also, replace <STORAGE_NAME> with the name of the account you used in the previous step, <APP_NAME> with a globally unique name appropriate to you, and <DOCKER_ID> or <login-server> with your Docker Hub ID or ACR , <user_name> with the username to log in to container registry(mostly applicable for ACR) and <user_password> with the password to log in to container registry. If
 stored as a secret, value must start with 'secretref:' followed by the secret name (mostly applicable for ACR).
 
-The *deployment-container-image-name* parameter specifies the image to use for the function app. You can use the [az functionapp config container show](https://learn.microsoft.com/en-us/cli/azure/functionapp/config/container#az-functionapp-config-container-show) command to view information about the image used for deployment. You can also use the [az functionapp config container set](https://learn.microsoft.com/en-us/cli/azure/functionapp/config/container#az-functionapp-config-container-set) command to deploy from a different image.
+The *--image* parameter specifies the image to use for the function app. You can use the [az functionapp config container show](https://learn.microsoft.com/en-us/cli/azure/functionapp/config/container#az-functionapp-config-container-show) command to view information about the image used for deployment. You can also use the [az functionapp config container set](https://learn.microsoft.com/en-us/cli/azure/functionapp/config/container#az-functionapp-config-container-set) command to deploy from a different image.
 
 When you first create the function app, it pulls the initial image from your Docker Hub. You can also [Enable continuous deployment to Azure](https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-function-linux-custom-image#enable-continuous-deployment-to-azure) from Docker Hub.
 
@@ -244,14 +244,15 @@ storageConnectionString=\$(az storage account show-connection-string --resource-
   connectionString --output tsv)
 
 az functionapp config appsettings set --name <app_name> \
---resource-group AzureFunctionsContainers-rg --settings AzureWebJobsStorage=\$storageConnectionString
+--resource-group AzureFunctionsContainers-rg --settings AzureWebJobsStorage=$storageConnectionString
 ```
 
 ## Invoke the function on Azure
 
 Because your function uses an HTTP trigger, you invoke it by making an HTTP request to its URL in the browser or with a tool like curl.
-
-Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, appending the query parameter ?name=Functions. The browser should display similar output as when you ran the function locally.
+ 
+Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, 
+ appending the query parameter ?name=functions The browser should display similar output as when you ran the function locally.
 
 ## Clean up resources
 
@@ -261,7 +262,9 @@ If you\'re not going to continue on to the next sample function app, you can rem
 
 The following command deletes the specified resource group and all resources contained within it. If the group contains resources outside the scope of this quickstart, they are also deleted.
 
-**az group delete --name $RESOURCE_GROUP**
+```sh
+ az group delete --name $RESOURCE_GROUP
+ ```
 
 ** Tip**
 
@@ -270,9 +273,8 @@ Having issues? Let us know on GitHub by opening an issue [here](https://github.c
 ## Next steps
 
 -   Congratulations!! you have completed deploying your function app
-    running in a azure container apps you can connect it to Azure
-    Storage by adding a Queue Storage output binding or Azure Service
-    Bus or Azure EventHub
+    running in a azure container apps you can connect it to [Azure
+    Storage by adding a Queue Storage output binding](https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-storage-queue-cli?pivots=programming-language-csharp&tabs=in-process%2Cv1%2Cbash%2Cbrowser) or Azure Service Bus or Azure EventHub or Kafka Trigger
 
 
 ## Contributing
