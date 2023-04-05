@@ -254,8 +254,7 @@ az functionapp config appsettings set --name <app_name> \
 
 Because your function uses an HTTP trigger, you invoke it by making an HTTP request to its URL in the browser or with a tool like curl.
  
-Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, 
- appending the query parameter ?name=functions The browser should display similar output as when you ran the function locally.
+Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, appending the query parameter ?name=functions or copy the Application Url and append /api/HttpExample?name=HelloWorld. The browser should display similar output as when you ran the function locally.
 
 ## Clean up resources
 
