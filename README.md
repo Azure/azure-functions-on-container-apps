@@ -78,7 +78,7 @@ Verify your prerequisites, which depend on whether you\'re using Azure CLI for c
 1\. Run the func init command, as follows, to create a functions project in a folder named *LocalFunctionProj* with the specified runtime:
 
 ```sh
-func init LocalFunctionProj --dotnet --docker
+func init LocalFunctionProj --worker-runtime dotnet-isolated --docker --target-framework net7.0
 ```
 
 The \--docker option generates a Dockerfile for the project, which defines a suitable custom container for use with Azure Functions and the selected runtime.
