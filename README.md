@@ -43,8 +43,7 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 ## In this section:
 -  [**Prerequisites**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#prerequisites)
 -  [**Create a local function project**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-the-local-function-project-c-isolated---http-trigger)
--  [**Build container image and test locally**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#build-the-container-image-and-test-locally)
--  [**Push the image to Docker Hub/Azure Container Registry**](
+-  [**Build, Test and Push the container image **](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#build-the-container-image-and-test-locally)
 -  [**Create Azure resources**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-azure-resources)
 -  [**Invoke the function on Azure** ](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#invoke-the-function-on-azure)
 -  [**Next Steps**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#next-steps)
@@ -109,7 +108,7 @@ func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
 The Dockerfile in the project root describes the minimum required environment to run the function app in a container. The complete list of supported base images for Azure Functions is documented above as **Host images** in the pre-requisites section or can be found in the [Azure Functions Base by Microsoft \| Docker
 Hub](https://hub.docker.com/_/microsoft-azure-functions-base)
 
-**Build and Push using Docker:**
+> **Build and Push using Docker:**
 
 1\. In the root project folder, run the [docker build](https://docs.docker.com/engine/reference/commandline/build/) command, and provide a name, azurefunctionsimage, and tag, v1.0.0.
 The following command builds the Docker image for the container.
@@ -139,7 +138,7 @@ docker push <docker_id>/azurefunctionsimage:v1.0.0
 ```
  7\. Depending on your network speed, pushing the image the first time might take a few minutes (pushing subsequent changes is much faster). While you\'re waiting, you can proceed to the next section and create Azure resources in another terminal.
 
-**Build and Push using ACR (Azure Container Registry)**
+> **Build and Push using ACR (Azure Container Registry)**
 
 You can build and deploy functions on Azure container apps using ACR as well. Please make sure you have an [ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) repository created by following the steps mentioned in the link. Azure Container Registry is a private registry service for building, storing,and managing container images and related artifacts.
 
@@ -171,9 +170,9 @@ The following command builds the image, but pushes it to your container registry
 
 Before you can deploy your container to your Azure Container apps you need to create two more resources
 
-A [Storage account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create). 
+a\. A [Storage account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create). 
 
-Create the Container Apps environment with a Log Analytics workspace
+b\. Create the Container Apps environment with a Log Analytics workspace
 
 1\. Login to your Azure subscription
 
