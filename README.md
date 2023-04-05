@@ -111,6 +111,7 @@ Hub](https://hub.docker.com/_/microsoft-azure-functions-base)
 > **Build and Push using Docker:**
 
 1\. In the root project folder, run the [docker build](https://docs.docker.com/engine/reference/commandline/build/) command, and provide a name, azurefunctionsimage, and tag, v1.0.0.
+> Note: Please make sure docker is running in your local
 The following command builds the Docker image for the container.
 ```sh
 docker build --tag <DOCKER_ID>/azurefunctionsimage:v1.0.0 .
