@@ -43,7 +43,7 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 ## In this section:
 -  [**Prerequisites**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#prerequisites)
 -  [**Create a local function project**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-the-local-function-project-c-isolated---http-trigger)
--  [**Build, Test and Push the container image **](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#build-the-container-image-and-test-locally)
+-  [**Build, Test and Push the container image**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#build-the-container-image-and-test-locally)
 -  [**Create Azure resources**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-azure-resources)
 -  [**Invoke the function on Azure** ](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#invoke-the-function-on-azure)
 -  [**Next Steps**](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#next-steps)
