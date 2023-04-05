@@ -199,7 +199,7 @@ az provider register --namespace Microsoft.OperationalInsights
 Create an environment with an auto-generated Log Analytics workspace.
 
 ```sh
-  az group create --name demoResourceGroup --location northeurope
+  az group create --name MyResourceGroup --location northeurope
   az containerapp env create -n MyContainerappEnvironment -g MyResourceGroup --location northeurope
   ```
 3\.  Create Storage account
