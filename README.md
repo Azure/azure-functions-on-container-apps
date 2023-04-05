@@ -187,6 +187,8 @@ az extension add --name containerapp --upgrade
 
 az provider register --namespace Microsoft.App
 
+az provider register --namespace Microsoft.App
+
 az provider register --namespace Microsoft.OperationalInsights
 ```
 ---
