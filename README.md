@@ -65,7 +65,7 @@ used
 
 **Prerequisite check**
 
-Verify your prerequisites, which depend on whether you\'re using Azure CLI or Azure PowerShell for creating Azure resources:
+Verify your prerequisites, which depend on whether you\'re using Azure CLI for creating Azure resources:
 **Azure CLI**
 -  In a terminal or command window, run func --version to check that the Azure Functions Core Tools are version 4.x.
 -  Run dotnet --list-sdks to check that the required versions are installed.
