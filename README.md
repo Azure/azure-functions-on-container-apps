@@ -37,7 +37,6 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 ## Azure Regions 
 
 -  North Europe
--  East US
 
 ## Create your first Azure Function on Azure Container Apps
 ## In this section:
