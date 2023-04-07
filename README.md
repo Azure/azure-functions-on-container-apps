@@ -53,7 +53,7 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 
 |     C# Isolated                                                                                                                                                                                                                  |     Node                                  |     Python                                                            |     Java                                                                                                                                                                                                              |     PowerShell                                     |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-|     [.NET   6.0 SDK.](https://dotnet.microsoft.com/download), [Docker](https://docs.docker.com/install/), [Docker ID](https://hub.docker.com/signup) OR [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) (You must  have Docker installed locally. Docker   provides packages that easily configure Docker on any [Mac], Windows, or Linux system.) |[Node.js](https://nodejs.org/) version 18 or above.         |[Python versions that are supported by Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/supported-languages#languages-by-runtime-version)          |The [Java Developer Kit](https://learn.microsoft.com/en-us/azure/developer/java/fundamentals/java-support-on-azure), version 8 or 11. The JAVA\_HOME environment variable must be set to the install location of the correct version of the JDK.[Apache Maven](https://maven.apache.org/), version 3.0 or above |The [.NET 6.0 SDK](https://dotnet.microsoft.com/download)[PowerShell 7.2](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows)|
+|     [.NET   6.0 SDK.](https://dotnet.microsoft.com/download) and optionally [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) when targeting .NET 7.0., [Docker](https://docs.docker.com/install/), [Docker ID](https://hub.docker.com/signup) OR [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) (You must  have Docker installed locally. Docker   provides packages that easily configure Docker on any [Mac], Windows, or Linux system.) |[Node.js](https://nodejs.org/) version 18 or above.         |[Python versions that are supported by Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/supported-languages#languages-by-runtime-version)          |The [Java Developer Kit](https://learn.microsoft.com/en-us/azure/developer/java/fundamentals/java-support-on-azure), version 8 or 11. The JAVA\_HOME environment variable must be set to the install location of the correct version of the JDK.[Apache Maven](https://maven.apache.org/), version 3.0 or above |The [.NET 6.0 SDK](https://dotnet.microsoft.com/download)[PowerShell 7.2](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows)|
 |[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.| [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|
 |[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|
 | You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).|
@@ -75,6 +75,7 @@ Verify your prerequisites, which depend on whether you\'re using Azure CLI for c
 
 
 1\. Run the func init command, as follows, to create a functions project in a folder named *LocalFunctionProj* with the specified runtime:
+Below sample built for .NET 7
 
 ```sh
 func init LocalFunctionProj --worker-runtime dotnet-isolated --docker --target-framework net7.0
@@ -90,9 +91,30 @@ cd LocalFunctionProj
 This folder contains the Dockerfile and other files for the project, including configurations files named [local.settings.json](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-local#local-settings-file) and [host.json](https://learn.microsoft.com/en-us/azure/azure-functions/functions-host-json).
 By default, the *local.settings.json* file is excluded from source control in the *.gitignore* file. This exclusion is because the file can contain secrets that are downloaded from Azure.
 
-3\. Open the Dockerfile to include following  
+3\. Open the Dockerfile to include following (Usually found in Line 13)
 
 > FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated7.0
+
+Sample Dockerfile for .NET 7
+```sh
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
+
+# Build requires 3.1 SDK
+COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
+
+COPY . /src/dotnet-function-app
+RUN cd /src/dotnet-function-app && \
+    mkdir -p /home/site/wwwroot && \
+    dotnet publish *.csproj --output /home/site/wwwroot
+
+# To enable ssh & remote debugging on app service change the base image to the one below
+# FROM mcr.microsoft.com/azure-functions/dotnet-isolated:3.0-dotnet-isolated5.0-appservice
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated7.0
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
+COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
+```
 
 This version of the base image supports Azure Functions deployment to an Azure Container Apps service
 
