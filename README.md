@@ -94,6 +94,7 @@ By default, the *local.settings.json* file is excluded from source control in 
 3\. Open the Dockerfile to include following (Usually found in Line 13)
 
 > FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated7.0
+> This version of the base image supports Azure Functions deployment to an Azure Container Apps service
 
 Sample Dockerfile for .NET 7
 ```sh
@@ -115,9 +116,11 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 ```
-
-This version of the base image supports Azure Functions deployment to an Azure Container Apps service
-
+> Incase you run into latest .net sdk issues run below command
+  ```sh
+  dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.7.0
+  ```
+  ---
 4\. Add a function to your project by using the following command, where the --name argument is the unique name of your function (HttpExample) and the                     --template argument specifies the function\'s trigger (HTTP).
 
 ```sh
