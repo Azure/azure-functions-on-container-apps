@@ -53,7 +53,7 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 
 |     C# Isolated                                                                                                                                                                                                                  |     Node                                  |     Python                                                            |     Java                                                                                                                                                                                                              |     PowerShell                                     |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-|     [.NET   6.0 SDK.](https://dotnet.microsoft.com/download) and optionally [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) when targeting .NET 7.0., [Docker](https://docs.docker.com/install/), [Docker ID](https://hub.docker.com/signup) OR [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) (You must  have Docker installed locally. Docker   provides packages that easily configure Docker on any [Mac], Windows, or Linux system.) |[Node.js](https://nodejs.org/) version 18 or above.         |[Python versions that are supported by Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/supported-languages#languages-by-runtime-version)          |The [Java Developer Kit](https://learn.microsoft.com/en-us/azure/developer/java/fundamentals/java-support-on-azure), version 8 or 11. The JAVA\_HOME environment variable must be set to the install location of the correct version of the JDK.[Apache Maven](https://maven.apache.org/), version 3.0 or above |The [.NET 6.0 SDK](https://dotnet.microsoft.com/download)[PowerShell 7.2](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows)|
+|     [.NET   6.0 SDK.](https://dotnet.microsoft.com/download) or [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) when targeting .NET 7.0., [Docker](https://docs.docker.com/install/), [Docker ID](https://hub.docker.com/signup) OR [Azure Container Registry](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) (You must  have Docker installed locally. Docker   provides packages that easily configure Docker on any [Mac], Windows, or Linux system.) |[Node.js](https://nodejs.org/) version 18 or above.         |[Python versions that are supported by Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/supported-languages#languages-by-runtime-version)          |The [Java Developer Kit](https://learn.microsoft.com/en-us/azure/developer/java/fundamentals/java-support-on-azure), version 8 or 11. The JAVA\_HOME environment variable must be set to the install location of the correct version of the JDK.[Apache Maven](https://maven.apache.org/), version 3.0 or above |The [.NET 6.0 SDK](https://dotnet.microsoft.com/download)[PowerShell 7.2](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows)|
 |[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.| [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|[Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local#v2) version 4.x.|
 |[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) [version 2.4](https://learn.microsoft.com/en-us/cli/azure/release-notes-azure-cli#april-21-2020) or later.|
 | You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).| You also need an Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio).|
@@ -95,6 +95,8 @@ By default, the *local.settings.json* file is excluded from source control in 
 
 > FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated7.0
 > This version of the base image supports Azure Functions deployment to an Azure Container Apps service
+> check to include below as well in the Dockerfile (found in Line 1)
+> FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env 
 
 Sample Dockerfile for .NET 7
 ```sh
@@ -155,6 +157,7 @@ Again, replace <DOCKER_ID with your Docker ID and adding the ports argument, 
 
 Docker Hub is a container registry that hosts images and provides image and container services. To share your image, which includes deploying to Azure, you must push it to a registry.
 **Docker login**
+
 5\.  If you haven\'t already signed in to Docker, do so with the [docker login](https://docs.docker.com/engine/reference/commandline/login/) command, replacing  <docker_id> with your Docker ID. This command prompts you for your username and password. A "Login Succeeded" message confirms that you\'re signed in.
 
 6\. After you\'ve signed in, push the image to Docker Hub by using the [docker push](https://docs.docker.com/engine/reference/commandline/push/) command, again replacing <docker_id> with your Docker ID.
@@ -163,7 +166,7 @@ docker push <docker_id>/azurefunctionsimage:v1.0.0
 ```
  7\. Depending on your network speed, pushing the image the first time might take a few minutes (pushing subsequent changes is much faster). While you\'re waiting, you can proceed to the next section and create Azure resources in another terminal.
 
-> **Build and Push using ACR (Azure Container Registry)**
+> **Build and Push using ACR (Optional Azure Container Registry)**
 
 You can build and deploy functions on Azure container apps using ACR as well. Please make sure you have an [ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) repository created by following the steps mentioned in the link. Azure Container Registry is a private registry service for building, storing,and managing container images and related artifacts.
 
@@ -185,7 +188,7 @@ Replace <login-server> with the login server name of your ACR instance.
   docker tag <docker_id>/azurefunctionsimage:v1.0.0 <login-server>/azurefunctionsimage:v1
   ```
 
-The following command builds the image, but pushes it to your container registry if the build is successful.
+The following command builds the image, and pushes it to your container registry if the build is successful.
 
 ```sh
   az acr build --registry $ACR_NAME --image azurefunctionsimage:v1 .
@@ -241,10 +244,15 @@ Replace <STORAGE_NAME> with a name that is appropriate to you and unique in Az
  
 ----
 > Note: **If you wish to use the quick start demo Http trigger sample you can include the below image url for --image parameter(this is a
-publicly accessible image so username/password is not required)
+publicly accessible image so username/password is not required) 
+
 ```sh  
 azurefunctionstest.azurecr.io/azure-functions/dotnet7-quickstart-demo:1.0
   ```
+> OR you may keep the image url ready for an existing image that you have in your repo which is already "build" 
+    for eg: <hub-user>/<repo-name>:<tag> ->  mydockerusr/azurefunctionsimage:v2
+    
+    > Using Docker Hub
   ---
 ```sh
 az functionapp create --resource-group MyResourceGroup --name <functionapp_name> \
@@ -252,7 +260,17 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 --storage-account <Storage_name> \
 --functions-version 4 \
 --runtime dotnet-isolated \
---image <login-server>/azurefunctionsimage:v1 \
+--image <DOCKER_ID>/<image_name>:<version> 
+```
+> Using ACR
+---    
+```sh
+az functionapp create --resource-group MyResourceGroup --name <functionapp_name> \
+--environment MyContainerappEnvironment \
+--storage-account <Storage_name> \
+--functions-version 4 \
+--runtime dotnet-isolated \
+--image <acr login-server>/<image_name>:<version> \
 --registry-username <user_name> --registry-password <user_password>
   ```
 
@@ -267,18 +285,25 @@ When you first create the function app, it pulls the initial image from your Doc
 
 Run the following commands to create an app setting for the storage account connection string:
 ```sh
-storageConnectionString=\$(az storage account show-connection-string --resource-group AzureFunctionsContainers-rg --name <STORAGE_NAME> --query \
-  connectionString --output tsv)
-
+az storage account show-connection-string --resource-group AzureFunctionsContainers-rg --name <STORAGE_NAME> --query connectionString --output tsv
+ ```
+  Copy the output of the above and replace below at <storageConnectionString>
+```sh
 az functionapp config appsettings set --name <app_name> \
---resource-group AzureFunctionsContainers-rg --settings AzureWebJobsStorage=$storageConnectionString
+--resource-group <AzureFunctionsContainers-rg> --settings AzureWebJobsStorage=<storageConnectionString>
 ```
 
 ## Invoke the function on Azure
 
 Because your function uses an HTTP trigger, you invoke it by making an HTTP request to its URL in the browser or with a tool like curl.
- 
+Execute below command to get the Invoke URL
+    
+```sh
+az functionapp function show -g <Resource_group> -n  <function_app_name>  --function-name <http_funtion_name> --query "invokeUrlTemplate" --output tsv
+```
+  
 Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, appending the query parameter ?name=functions or copy the Application Url and append /api/HttpExample?name=HelloWorld. The browser should display similar output as when you ran the function locally.
+> For eg: The Url generated would be - http://myfuncapponaca.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/httpexample
 
 ## Clean up resources
 
