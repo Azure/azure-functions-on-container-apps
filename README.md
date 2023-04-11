@@ -242,17 +242,19 @@ Replace <STORAGE_NAME> with a name that is appropriate to you and unique in Az
  
  Run the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/functionapp#az-functionapp-create) command to create a new function app in the new managed environment backed by azure container apps.
  
-----
+
 > Note: **If you wish to use the quick start demo Http trigger sample you can include the below image url for --image parameter(this is a
 publicly accessible image so username/password is not required) 
-
+---
 ```sh  
 azurefunctionstest.azurecr.io/azure-functions/dotnet7-quickstart-demo:1.0
   ```
+---
+    
 > OR you may keep the image url ready for an existing image that you have in your repo which is already "build" 
     for eg: <hub-user>/<repo-name>:<tag> ->  mydockerusr/azurefunctionsimage:v2
     
-    > Using Docker Hub
+> Using Docker Hub
   ---
 ```sh
 az functionapp create --resource-group MyResourceGroup --name <functionapp_name> \
@@ -273,6 +275,7 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 --image <acr login-server>/<image_name>:<version> \
 --registry-username <user_name> --registry-password <user_password>
   ```
+ ---
 
 In this example, replace **MyContainerappEnvironment** with the Azure container apps environment name. Also, replace <STORAGE_NAME> with the name of the account you used in the previous step, <APP_NAME> with a globally unique name appropriate to you, and <DOCKER_ID> or <login-server> with your Docker Hub ID or ACR , <user_name> with the username to log in to container registry(mostly applicable for ACR) and <user_password> with the password to log in to container registry. If
 stored as a secret, value must start with 'secretref:' followed by the secret name (mostly applicable for ACR).
@@ -287,10 +290,10 @@ Run the following commands to create an app setting for the storage account conn
 ```sh
 az storage account show-connection-string --resource-group AzureFunctionsContainers-rg --name <STORAGE_NAME> --query connectionString --output tsv
  ```
-  Copy the output of the above and replace below at <storageConnectionString>
+Copy the output of the above and replace below at <storageConnectionString>
+    
 ```sh
-az functionapp config appsettings set --name <app_name> \
---resource-group <AzureFunctionsContainers-rg> --settings AzureWebJobsStorage=<storageConnectionString>
+az functionapp config appsettings set --name <app_name> --resource-group <AzureFunctionsContainers-rg> --settings AzureWebJobsStorage=<storageConnectionString>
 ```
 
 ## Invoke the function on Azure
