@@ -70,6 +70,7 @@ Verify your prerequisites, which depend on whether you\'re using Azure CLI for c
 -  Run dotnet --list-sdks to check that the required versions are installed.
 -  Run az --version to check that the Azure CLI version is 2.4 or later
 -  Run az login to sign in to Azure and verify an active subscription.
+-  [Docker](https://docs.docker.com/install/) is installed, have a [Docker ID](https://hub.docker.com/signup) and Docker is started
 
 ## **Create the local function project C# isolated - Http Trigger**
 
