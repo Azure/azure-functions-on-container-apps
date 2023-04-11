@@ -118,11 +118,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 ```
-> Incase you run into latest .net sdk issues run below command
-  ```sh
-  dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.7.0
-  ```
-  ---
+
 4\. Add a function to your project by using the following command, where the --name argument is the unique name of your function (HttpExample) and the                     --template argument specifies the function\'s trigger (HTTP).
 
 ```sh
@@ -288,12 +284,12 @@ When you first create the function app, it pulls the initial image from your Doc
 
 Run the following commands to create an app setting for the storage account connection string:
 ```sh
-az storage account show-connection-string --resource-group AzureFunctionsContainers-rg --name <STORAGE_NAME> --query connectionString --output tsv
+az storage account show-connection-string --resource-group <Resource_group> --name <STORAGE_NAME> --query connectionString --output tsv
  ```
 Copy the output of the above and replace below at <storageConnectionString>
     
 ```sh
-az functionapp config appsettings set --name <app_name> --resource-group <AzureFunctionsContainers-rg> --settings AzureWebJobsStorage=<storageConnectionString>
+az functionapp config appsettings set --name <app_name> --resource-group <Resource_group> --settings AzureWebJobsStorage=<storageConnectionString>
 ```
 
 ## Invoke the function on Azure
