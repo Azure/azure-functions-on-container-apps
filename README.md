@@ -305,6 +305,15 @@ az functionapp function show -g <Resource_group> -n  <function_app_name>  --func
 Copy the complete **Invoke URL** shown in the output of the publish command into a browser address bar, appending the query parameter ?name=functions or copy the Application Url and append /api/HttpExample?name=HelloWorld. The browser should display similar output as when you ran the function locally.
 > For eg: The Url generated would be - http://myfuncapponaca.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/httpexample
 
+## Update function container image
+
+If you wish you make changes to your code, modify the image with new version tag and build it, and then finally update the function's container app image please use below command. 
+Note: Below sample for docker hub based image
+
+```sh
+az functionapp config container set --image-name <ImageName> --registry-password <Password>  --registry-username <DockerUserId> --name <MyFunctionApp> --resource-group <MyResourceGroup>
+```
+
 ## Clean up resources
 
 If you\'re not going to continue on to the next sample function app, you can remove the Azure resources created during this quickstart with the following command.
