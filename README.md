@@ -95,8 +95,8 @@ By default, the *local.settings.json* file is excluded from source control in 
 3\. Open the Dockerfile to include following (Usually found in Line 13)
 
 > FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated7.0
-> This version of the base image supports Azure Functions deployment to an Azure Container Apps service
-> check to include below as well in the Dockerfile (found in Line 1)
+
+> This version of the base image supports Azure Functions deployment to an Azure Container Apps service check to include below as well in the Dockerfile (found in Line 1)
 > FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env 
 
 Sample Dockerfile for .NET 7
@@ -335,6 +335,10 @@ Having issues? Let us know on GitHub by opening an issue [here](https://github.c
 -   Congratulations!! you have completed deploying your function app
     running in a azure container apps you can connect it to [Azure
     Storage by adding a Queue Storage output binding](https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-storage-queue-cli?pivots=programming-language-csharp&tabs=in-process%2Cv1%2Cbash%2Cbrowser) or Azure Service Bus or Azure EventHub or Kafka Trigger
+    
+
+ ## TroubleShooting 
+Having issues with creating Azure Functions on Azure Container apps please refer to the [troubleshooting guide](https://github.com/Azure/azure-functions-on-container-apps/blob/main/Troubleshooting%20Guide)
 
 
 ## Contributing
