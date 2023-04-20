@@ -1,0 +1,21 @@
+[
+  {
+    "name": "ServiceBusExample",
+    "scriptFile": "ServiceBusProj.dll",
+    "entryPoint": "ServiceBusProj.ServiceBusExample.Run",
+    "language": "dotnet-isolated",
+    "properties": {
+      "IsCodeless": false
+    },
+    "bindings": [
+      {
+        "name": "myQueueItem",
+        "type": "serviceBusTrigger",
+        "direction": "In",
+        "dataType": "String",
+        "queueName": "upper-case",
+        "connection": "AzureWebJobsServiceBus"
+      }
+    ]
+  }
+]
