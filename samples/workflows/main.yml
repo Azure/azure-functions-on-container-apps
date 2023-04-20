@@ -31,7 +31,7 @@ env:
   LOGIN_SERVER: <<>>                           # set this to login server for your private container registry (e.g. 'contoso.azurecr.io', 'docker.io' )
   NAMESPACE: <<>>                            # set this to proper value for NAMESPACE
   IMAGE: <<>>                                     # set this to proper value for IMAGE
-  TAG: v1                                  # set this to proper value for TAG
+  TAG: <<>>                                 # set this to proper value for TAG
 
 jobs:
   build:
