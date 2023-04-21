@@ -26,12 +26,12 @@ permissions:
   contents: read
 
 env:  
-  AZURE_FUNCTION_APP_NAME: funcasaacaapp                # set this to your function app name on Azure
-  AZURE_RESOURCE_GROUP_NAME: asafuncacarg  # set this to your resource group name on Azure
-  LOGIN_SERVER: docker.io                            # set this to login server for your private container registry (e.g. 'contoso.azurecr.io', 'docker.io' )
-  NAMESPACE: ramyaliftrdocker                            # set this to proper value for NAMESPACE
-  IMAGE: funcasaacasbimage                                     # set this to proper value for IMAGE
-  TAG: v1                                  # set this to proper value for TAG
+  AZURE_FUNCTION_APP_NAME: <<>>               # set this to your function app name on Azure
+  AZURE_RESOURCE_GROUP_NAME: << >>  # set this to your resource group name on Azure
+  LOGIN_SERVER: << >>                            # set this to login server for your private container registry (e.g. 'contoso.azurecr.io', 'docker.io' )
+  NAMESPACE: << >>                            # set this to proper value for NAMESPACE
+  IMAGE: << >>                                     # set this to proper value for IMAGE
+  TAG: << >>                                  # set this to proper value for TAG
 
 jobs:
   build:
