@@ -119,7 +119,12 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 ```
-
+> Note : If you are using .NET 7 then remember to update the .csproj file <TargetFramework> to point to net7.0 as shown below
+  ```sh
+    <TargetFramework>net7.0</TargetFramework>
+   ```
+    
+    
 4\. Add a function to your project by using the following command, where the --name argument is the unique name of your function (HttpExample) and the                     --template argument specifies the function\'s trigger (HTTP).
 
 ```sh
