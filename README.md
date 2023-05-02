@@ -316,7 +316,7 @@ If you wish you make changes to your code, modify the image with new version tag
 Note: Below sample for docker hub based image
 
 ```sh
-az functionapp config container set --image-name <ImageName> --registry-password <Password>  --registry-username <DockerUserId> --name <MyFunctionApp> --resource-group <MyResourceGroup>
+az functionapp config container set --image <ImageName> --registry-password <Password>  --registry-username <DockerUserId> --name <MyFunctionApp> --resource-group <MyResourceGroup>
 ```
 
 ## Clean up resources
