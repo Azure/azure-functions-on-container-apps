@@ -312,7 +312,7 @@ Copy the complete **Invoke URL** shown in the output of the publish command in
 
 ## Update function container image
 
-If you wish you make changes to your code, modify the image with new version tag and build it, and then finally update the function's container app image please use below command. 
+If you wish to make changes to your code, modify the image with new version tag and build it, and then finally update the function's container app image please use below command. 
 Note: Below sample for docker hub based image
 
 ```sh
