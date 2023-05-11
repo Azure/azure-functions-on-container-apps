@@ -101,15 +101,18 @@ By default, the *local.settings.json* file is excluded from source control in 
 
 Sample Dockerfile for .NET 7
 ```sh
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
 
 # Build requires 3.1 SDK
-COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
+#COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
 
 COPY . /src/dotnet-function-app
 RUN cd /src/dotnet-function-app && \
-    mkdir -p /home/site/wwwroot && \
-    dotnet publish *.csproj --output /home/site/wwwroot
+  mkdir -p /home/site/wwwroot && \
+  dotnet publish *.csproj --output /home/site/wwwroot
+
+  #WORKDIR /src/dotnet-function-app
+#RUN dotnet publish *.csproj --output /home/site/wwwroot
 
 # To enable ssh & remote debugging on app service change the base image to the one below
 # FROM mcr.microsoft.com/azure-functions/dotnet-isolated:3.0-dotnet-isolated5.0-appservice
@@ -142,7 +145,7 @@ Hub](https://hub.docker.com/_/microsoft-azure-functions-base)
 > Note: Please make sure docker is running in your local
 The following command builds the Docker image for the container.
 ```sh
-docker build --tag <DOCKER_ID>/azurefunctionsimage:v1.0.0 .
+docker build --platform linux --tag <DOCKER_ID>/azurefunctionsimage:v1.0.0 .
 ```
 
 In this example, replace \<DOCKER_ID\> with your Docker Hub account ID. When the command completes, you can run the new container locally.
