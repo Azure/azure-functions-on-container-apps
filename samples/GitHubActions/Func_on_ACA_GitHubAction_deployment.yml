@@ -1,7 +1,6 @@
 # This workflow will build a container and deploy it to an Azure Functions App on Linux when a commit is pushed to your default branch.
 #
-# This workflow assumes you have already created the target Azure Functions app.
-# For instructions see https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-function-linux-custom-image?tabs=in-process%2Cbash%2Cazure-cli&pivots=programming-language-csharp
+# This workflow assumes you have already created the target Azure Functions app on Azure.
 #
 # To configure this workflow:
 # 1. Set up the following secrets in your repository:
