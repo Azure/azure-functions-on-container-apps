@@ -1,4 +1,4 @@
-# Deploy container to Azure Functions App
+# Deploy container to Azure Functions App using GitHub workflow 
 This workflow will build a container and deploy it to an Azure Functions App on Linux when a commit is pushed to your default branch.
 
 ## Pre-requisite
