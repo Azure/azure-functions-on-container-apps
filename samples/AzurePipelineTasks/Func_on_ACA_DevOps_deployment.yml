@@ -1,0 +1,47 @@
+# This pipeline will build a container and deploy it to an Azure Functions App on Linux.
+#
+# This workflow assumes you have already created the target Azure Functions app on Azure.
+#
+# To configure this workflow:
+# Replace the following with correct values in this pipeline:
+#   - your-registry
+#   - your-namespace
+#   - your-image-name
+#   - your-subscription-id
+#   - your-functionapp-name
+#
+# For more information on yaml pipelines: https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+
+steps:
+- task: Docker@2
+  displayName: Login
+  inputs:
+    containerRegistry: your-registry
+    command: login
+
+- task: Docker@2
+  displayName: build
+  inputs:
+    containerRegistry: your-registry
+    repository: 'your-namespace/your-image-name'
+    command: build
+
+- task: Docker@2
+  displayName: push
+  inputs:
+    containerRegistry: your-registry
+    repository: 'your-namespace/your-image-name'
+    command: push
+
+- task: AzureFunctionAppContainer@1
+  displayName: 'Azure Function App on Container Deploy'
+  inputs:
+    azureSubscription: 'your-subscription-id'
+    appName: 'your-functionapp-name'
+    imageName: 'your-namespace/your-image-name:$(Build.BuildId)'
