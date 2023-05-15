@@ -1,6 +1,3 @@
-# For more information on GitHub Actions:
-#   https://help.github.com/en/categories/automating-your-workflow-with-github-actions
-
 # This workflow will build a container and deploy it to an Azure Functions App on Linux when a commit is pushed to your default branch.
 #
 # This workflow assumes you have already created the target Azure Functions app.
@@ -20,7 +17,7 @@
 #   - Azure Functions Container Action: https://github.com/Azure/functions-container-action
 #   - Azure Service Principal for RBAC: https://github.com/Azure/functions-action#using-azure-service-principal-for-rbac-as-deployment-credential
 #
-# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples/tree/master/FunctionApp
+# For more information on GitHub Actions: https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 name: Deploy container to Azure Functions App
 
@@ -92,6 +89,3 @@ jobs:
       - name: Azure logout
         run: |
           az logout
-
-# For more information on GitHub Actions:
-#   https://help.github.com/en/categories/automating-your-workflow-with-github-actions
