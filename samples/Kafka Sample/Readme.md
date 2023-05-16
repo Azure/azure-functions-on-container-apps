@@ -56,18 +56,13 @@ To test the function locally, run the following command:
 $ func start
 ```
 
-### deploy to Azure
+### Deploy Function App 
 
-#### deploy the app
-
-Deploy the app to a Premium Function You can choose.
-
-* [Quickstart: Create a function in Azure using Visual Studio Code](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-vs-code?pivots=programming-language-python)
-* [Quickstart: Create a function in Azure that responds to HTTP requests](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-cli?tabs=bash%2Cbrowser&pivots=programming-language-python)
+Deploy the Function App as mentioned in the [README](../../README.md)
 
 #### Configure AppSettings
  You need to configure these application settings. `BrokerList`, `KafkaPassword` to the Function App as required for the sample. Refer to [README](../../README.md)
-
+ for more details.
 
 # Resource
 
