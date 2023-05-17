@@ -47,12 +47,12 @@ resource environment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   name: '${envResourceNamePrefix}-env'
   location: location
   properties: {
-    daprAIInstrumentationKey: reference(appInsights.id, '2020-02-02').InstrumentationKey
+    daprAIInstrumentationKey: appInsights.properties.InstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: reference(logAnalyticsWorkspace.id, '2021-06-01').customerId
-        sharedKey: listKeys(logAnalyticsWorkspace.id, '2021-06-01').primarySharedKey
+        customerId: logAnalyticsWorkspace.properties.customerId
+        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
   }
