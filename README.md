@@ -101,7 +101,7 @@ By default, the *local.settings.json* file is excluded from source control in 
 
 Sample Dockerfile for .NET 7
 ```sh
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
 
 # Build requires 3.1 SDK
 #COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
@@ -122,11 +122,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
 ```
-> Note : If you are using .NET 7 then remember to update the .csproj file <TargetFramework> to point to net7.0 as shown below
-  ```sh
-    <TargetFramework>net7.0</TargetFramework>
-   ```
-    
+
     
 4\. Add a function to your project by using the following command, where the --name argument is the unique name of your function (HttpExample) and the                     --template argument specifies the function\'s trigger (HTTP).
 
@@ -298,7 +294,7 @@ az storage account show-connection-string --resource-group <Resource_group> --na
 Copy the output of the above and replace below at <storageConnectionString>
     
 ```sh
-az functionapp config appsettings set --name <app_name> --resource-group <Resource_group> --settings AzureWebJobsStorage=<storageConnectionString>
+az functionapp config appsettings set --name <app_name> --resource-group <Resource_group> --settings 'AzureWebJobsStorage=<storageConnectionString>'
 ```
 
 ## Invoke the function on Azure
