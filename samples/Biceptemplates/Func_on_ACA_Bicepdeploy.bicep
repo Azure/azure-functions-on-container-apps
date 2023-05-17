@@ -17,7 +17,8 @@ resource azStorageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     name: 'Standard_LRS'
   }
 }
-var azStorageAccountPrimaryAccessKey = listKeys(azStorageAccount.id, azStorageAccount.apiVersion).keys[0].value
+var azStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${azStorageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${azStorageAccount.listKeys().keys[0].value}'
+
 
 resource logAnalyticsWorkspace'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: '${envResourceNamePrefix}-la'
@@ -71,7 +72,7 @@ resource azfunctionapp 'Microsoft.Web/sites@2022-09-01' = {
     appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: azStorageAccount.properties.ConnectionString
+          value: azStorageConnectionString
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
