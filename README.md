@@ -101,7 +101,7 @@ By default, the *local.settings.json* file is excluded from source control in 
 
 Sample Dockerfile for .NET 7
 ```sh
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
+FROM  mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
 
 # Build requires 3.1 SDK
 #COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
@@ -298,7 +298,7 @@ az storage account show-connection-string --resource-group <Resource_group> --na
 Copy the output of the above and replace below at <storageConnectionString>
     
 ```sh
-az functionapp config appsettings set --name <app_name> --resource-group <Resource_group> --settings AzureWebJobsStorage=<storageConnectionString>
+az functionapp config appsettings set --name <app_name> --resource-group <Resource_group> --settings AzureWebJobsStorage="<storageConnectionString>"
 ```
 
 ## Invoke the function on Azure
