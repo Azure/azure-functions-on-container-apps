@@ -176,7 +176,7 @@ Because the HTTP triggered function uses anonymous authorization, you can still 
 
 Docker Hub is a container registry that hosts images and provides image and container services. To share your image, which includes deploying to Azure, you must push it to a registry.
 
-#### Docker login**
+#### Docker login
 
 5.  If you haven't already signed in to Docker, do so with the [`docker login`](https://docs.docker.com/engine/reference/commandline/login/) command, replacing  `<docker_id>` with your Docker ID. This command prompts you for your username and password. A "Login Succeeded" message confirms that you're signed in.
 
