@@ -103,16 +103,10 @@ Sample Dockerfile for .NET 7
 ```sh
 FROM  mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
 
-# Build requires 3.1 SDK
-#COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
-
 COPY . /src/dotnet-function-app
 RUN cd /src/dotnet-function-app && \
   mkdir -p /home/site/wwwroot && \
   dotnet publish *.csproj --output /home/site/wwwroot
-
-  #WORKDIR /src/dotnet-function-app
-#RUN dotnet publish *.csproj --output /home/site/wwwroot
 
 # To enable ssh & remote debugging on app service change the base image to the one below
 # FROM mcr.microsoft.com/azure-functions/dotnet-isolated:3.0-dotnet-isolated5.0-appservice
