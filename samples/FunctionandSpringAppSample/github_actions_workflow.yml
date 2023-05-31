@@ -1,0 +1,83 @@
+ #This workflow will build a container image and deploy it to an Azure Functions App when a commit is pushed to your default branch.
+#
+# This workflow assumes you have already created the target Azure Functions app.
+#
+# To configure this workflow:
+# 1. Set up the following secrets in your repository:
+#   - AZURE_RBAC_CREDENTIALS
+#   - REGISTRY_USERNAME
+#   - REGISTRY_PASSWORD
+# 2. Change env variables for your configuration.
+#
+# For more information on:
+#   - GitHub Actions for Azure: https://github.com/Azure/Actions
+#   - Azure Service Principal for RBAC: https://github.com/Azure/functions-action#using-azure-service-principal-for-rbac-as-deployment-credential
+#
+# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples/tree/master/FunctionApp
+
+name: Deployment for cp-centauri-site
+
+on:
+  push:
+    branches: 
+      [ main ]
+    
+permissions:
+  contents: read
+
+env:  
+  AZURE_FUNCTION_APP_NAME: funcasaacaapp                # set this to your function app name on Azure
+  AZURE_RESOURCE_GROUP_NAME: asafuncacarg  # set this to your resource group name on Azure
+  LOGIN_SERVER: docker.io                            # set this to login server for your private container registry (e.g. 'contoso.azurecr.io', 'docker.io' )
+  NAMESPACE: ramyaliftrdocker                            # set this to proper value for NAMESPACE
+  IMAGE: funcasaacasbimage                                     # set this to proper value for IMAGE
+  TAG: v1                                  # set this to proper value for TAG
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ env.NAMESPACE }}/${{ env.IMAGE }}:${{ env.TAG }}
+         # file: ./Dockerfile
+          context: ./
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}
+
+      - name: Deploy to functionapp
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.47.0 
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az functionapp config container set -n ${{ env.AZURE_FUNCTION_APP_NAME }} -g ${{ env.AZURE_RESOURCE_GROUP_NAME }} --image ${{ env.NAMESPACE }}/${{ env.IMAGE }}:${{ env.TAG }} --registry-server ${{ env.LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Azure logout
+        run: |
+          az logout
+          
