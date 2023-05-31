@@ -1,7 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS installer-env
 
-# Build requires 3.1 SDK
-COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
+
 
 COPY . /src/dotnet-function-app
 RUN cd /src/dotnet-function-app && \
