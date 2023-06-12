@@ -36,7 +36,18 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 
 ## Azure Regions 
 
--  North Europe
+Container Apps support for Functions is currently in preview and is only available in the following regions:
+- Australia East
+- Central US
+- East US
+- East Us 2
+- North Europe
+- South Central US
+- UK South
+- West Europe
+- West US3
+
+When your container is hosted in a [Consumption + Dedicated plan](https://learn.microsoft.com/en-us/azure/container-apps/plans#consumption-dedicated) structure, only the default Consumption plan is currently supported. Dedicated plans in this structure aren't yet supported for Functions. When running functions on Container Apps, you're charged only for the Container Apps usage. For more information, see the [Azure Container Apps pricing page] (https://azure.microsoft.com/pricing/details/container-apps/). For list of supported regions in this plan [see here](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview#supported-regions)
 
 ## Create your first Azure Function on Azure Container Apps
 ## In this section:
