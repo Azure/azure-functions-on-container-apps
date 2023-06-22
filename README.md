@@ -324,8 +324,9 @@ If you wish to make changes to your code, modify the image with new version tag 
 Note: Below sample for docker hub based image
 
 ```sh
-az functionapp config container set --image <ImageName> --registry-password <Password>  --registry-username <DockerUserId> --name <MyFunctionApp> --resource-group <MyResourceGroup>
+az functionapp config container set --image <acr login-server>/<image_name>:<version> --registry-password <Password>  --registry-username <DockerUserId> --name <MyFunctionApp> --resource-group <MyResourceGroup>
 ```
+Note: --image should be in the format "<registry-login-server>/<image_name>:<version>"
 
 ## Clean up resources
 
