@@ -26,7 +26,7 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 -  **Build multi type apps** and easily integrate with multiple app types for a microservices design like run functions along with other microservices, APIs, websites,  workflows or any container hosted programs
 -  **Scale dynamically based on events** all the way to zero or scale to dozens of containers when under high load
 
-## Triggers and Bindings that would be available in Private preview 
+## Triggers and Bindings that would be available in Public preview 
 
 -  Http 
 -  Azure Storage Queue
