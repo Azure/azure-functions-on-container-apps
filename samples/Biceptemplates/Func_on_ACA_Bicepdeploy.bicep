@@ -17,7 +17,8 @@ resource azStorageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     name: 'Standard_LRS'
   }
 }
-var azStorageAccountPrimaryAccessKey = listKeys(azStorageAccount.id, azStorageAccount.apiVersion).keys[0].value
+var azStorageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${azStorageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${azStorageAccount.listKeys().keys[0].value}'
+
 
 resource logAnalyticsWorkspace'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: '${envResourceNamePrefix}-la'
@@ -47,12 +48,12 @@ resource environment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   name: '${envResourceNamePrefix}-env'
   location: location
   properties: {
-    daprAIInstrumentationKey: reference(appInsights.id, '2020-02-02').InstrumentationKey
+    daprAIInstrumentationKey: appInsights.properties.InstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: reference(logAnalyticsWorkspace.id, '2021-06-01').customerId
-        sharedKey: listKeys(logAnalyticsWorkspace.id, '2021-06-01').primarySharedKey
+        customerId: logAnalyticsWorkspace.properties.customerId
+        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
   }
@@ -71,7 +72,7 @@ resource azfunctionapp 'Microsoft.Web/sites@2022-09-01' = {
     appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: azStorageAccount.properties.ConnectionString
+          value: azStorageConnectionString
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
