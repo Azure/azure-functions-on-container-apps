@@ -1,0 +1,47 @@
+# This pipeline will build a container and deploy it to an Azure Functions App on Linux.
+#
+# This pipeline assumes you have already created the target Azure Functions app on Azure.
+#
+# To configure this pipeline:
+# Replace the following with correct values in this pipeline:
+#   - your-registry
+#   - your-namespace
+#   - your-image-name
+#   - your-subscription-id
+#   - your-functionapp-name
+#
+# For more information on yaml pipelines: https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+
+steps:
+- task: Docker@2
+  displayName: Login
+  inputs:
+    containerRegistry: docker.io
+    command: login
+
+- task: Docker@2
+  displayName: build
+  inputs:
+    containerRegistry: docker.io
+    repository: 'ramyaliftrdocker/funcpythonimage:v1'
+    command: build
+
+- task: Docker@2
+  displayName: push
+  inputs:
+    containerRegistry: docker.io
+    repository: 'ramyaliftrdocker/funcpythonimage:v1'
+    command: push
+
+- task: AzureFunctionAppContainer@1
+  displayName: 'Azure Function App on Container Deploy'
+  inputs:
+    azureSubscription: '5add39a7-8f0d-414c-aec0-410ae9c8d156'
+    appName: 'fastapihttpfuncaca'
+    imageName: 'ramyaliftrdocker/funcpythonimage:$(Build.BuildId)'
