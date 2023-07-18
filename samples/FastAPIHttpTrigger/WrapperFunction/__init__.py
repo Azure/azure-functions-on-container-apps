@@ -16,3 +16,9 @@ async def get_name(name: str):
     return {
         "name": name,
     }
+
+@app.get("/order/{ordername}")
+async def get_name(ordername: str):
+    return {
+        "name": ordername,
+    }
