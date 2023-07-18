@@ -42,6 +42,6 @@ steps:
 - task: AzureFunctionAppContainer@1
   displayName: 'Azure Function App on Container Deploy'
   inputs:
-    azureSubscription: 'azure-sub'
+    azureSubscription: '5add39a7-8f0d-414c-aec0-410ae9c8d156'
     appName: 'fastapihttpfuncaca'
     imageName: 'ramyaliftrdocker/funcpythonimage:$(Build.BuildId)'
