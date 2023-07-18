@@ -29,14 +29,14 @@ steps:
   displayName: build
   inputs:
     containerRegistry: docker.io
-    repository: 'ramyaliftrdocker/funcpythonimage:v2'
+    repository: 'ramyaliftrdocker/funcpythonimage'
     command: build
 
 - task: Docker@2
   displayName: push
   inputs:
     containerRegistry: docker.io
-    repository: 'ramyaliftrdocker/funcpythonimage:v2'
+    repository: 'ramyaliftrdocker/funcpythonimage'
     command: push
 
 - task: AzureFunctionAppContainer@1
