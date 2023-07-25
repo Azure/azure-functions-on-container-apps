@@ -77,7 +77,7 @@ jobs:
         uses: Azure/functions-container-action@v1
         id: fa
         with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          app-name: ${{ env.AZURE_FUNCTION_APP_NAME }}
           image: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE }}:${{ env.TAG }}
 
       # If you want to display or use the functionapp url, then uncomment the task below
