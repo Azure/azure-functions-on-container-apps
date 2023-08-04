@@ -354,6 +354,8 @@ Having issues? Let us know on GitHub by opening an issue [here](https://github.c
  ## TroubleShooting 
 Having issues with creating Azure Functions on Azure Container apps please refer to the [troubleshooting guide](https://github.com/Azure/azure-functions-on-container-apps/blob/main/Troubleshooting%20Guide.md)
 
+## FAQ
+Refer to the FAQ to know more about the offering - [FAQ](https://github.com/Azure/azure-functions-on-container-apps/blob/main/FAQ.md)
 
 ## Contributing
 
