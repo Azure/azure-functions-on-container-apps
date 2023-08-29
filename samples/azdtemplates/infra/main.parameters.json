@@ -9,7 +9,7 @@
         "value": "${AZURE_LOCATION}"
       },
       "apiImageName": {
-        "value": "ramyaliftrdocker/funconacahttpimage:v1"
+        "value": "<your registry image url>"
       }
     }
 }
