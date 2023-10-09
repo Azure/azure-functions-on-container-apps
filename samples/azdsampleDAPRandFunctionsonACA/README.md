@@ -1,4 +1,4 @@
-# Azure Developer CLI (azd) Bicep Starter
+# Azure Developer CLI (azd) Deployment steps
 
 A starter blueprint for getting your application up on Azure using [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview) (azd). Add your application code, write Infrastructure as Code assets in [Bicep](https://aka.ms/bicep) to get your application up and running quickly.
 
