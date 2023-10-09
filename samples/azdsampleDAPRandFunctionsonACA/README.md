@@ -9,8 +9,6 @@ The following assets have been provided:
 - Continuous deployment workflows for CI providers such as GitHub Actions under the `.github` directory, and Azure Pipelines under the `.azdo` directory that work for most use-cases.
 
 ## Next Steps
-
-## Next Steps
 1. Clone the repo or use code spaces
 2. Go to folder consisting of azd code
 3. Go to infra/main.parameters.json and replace the apiImageNameCO and apiImageNameHP values  with the respective image url of your container registry. Under CodeSample/ folder in this repo you may find the python Http Function app - CodeSample/HttpFrontEnd  and Create Order function app CodeSample/CreateOrder  code that you may containerize and upload to the container registry
