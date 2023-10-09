@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = 'https://hf-4k56.mangobush-7790a409.northcentralus.azurecontainerapps.io/api/invoke'
+url = '<insert function container app url here>'
 
 payload = {
     "data": {
