@@ -9,10 +9,10 @@
         "value": "${AZURE_LOCATION}"
       },
       "apiImageNameCO": {
-        "value": "ramyaliftrdocker/createorderimage:v1.0.0"
+        "value": "<insert container registry image url for create order>"
       },
       "apiImageNameHP": {
-        "value": "ramyaliftrdocker/httpfrontendimage:v1.0.0"
+        "value": "<insert container registry image url for Http Function app>"
       }
 
     }
