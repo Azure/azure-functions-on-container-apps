@@ -44,8 +44,13 @@ For public preview release the following regions will be supported to deploy Fun
 9.	Central US
     
 ## 6. How do I configure scale rules for function app?
-The managed offering is designed to configure the scale parameters and rules as per the event target. You need not worry about configuring the KEDA scaled objects.
-However you will still have the option to set min and max replica count using either  az functionapp config container set --name <func_name> [--max-replicas] | [--min-replicas] OR az functionapp create  [--max-replicas] | [--min-replicas] for triggers which are not yet supported
+The managed offering is designed to configure the scale parameters and rules as per the event target. You need not worry about configuring the KEDA scaled objects. Currently below triggers are enabled with platform managed scaling with KEDA
+Http
+Azure Storage Queue
+Azure Service Bus
+Azure EventHub
+Kafka Trigger
+However you will still have the option to set min  replica count using either  az functionapp config container set --name <func_name> [--max-replicas] | [--min-replicas] OR az functionapp create  [--max-replicas] | [--min-replicas] for triggers which are not yet supported
 
 ## 7. How does policy effect the access to functions on ACA resource?
 From the list of [Azure Policies](https://learn.microsoft.com/en-us/azure/container-apps/policy-reference#policy-definitions) that can be enabled on ACA , only Container app environment policy enforcements will be applicable to functions container app. 
