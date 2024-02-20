@@ -292,6 +292,7 @@ Using friendly names allow you to add multiple profiles of the same type to an e
 
 For more details on edit/delete of profiles refer (here)[https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-manage-cli?tabs=external-env&pivots=aca-vnet-managed#add-profiles]
 
+---
 
 3\.  Create Storage account
 
