@@ -26,26 +26,19 @@ Functions on Container App environment is designed to meet the needs of cloud-na
 -  **Build multi type apps** and easily integrate with multiple app types for a microservices design like run functions along with other microservices, APIs, websites,  workflows or any container hosted programs
 -  **Scale dynamically based on events** all the way to zero or scale to dozens of containers when under high load
 
-## Triggers and Bindings that would be available in Public preview 
+## Triggers and Bindings that would have platform managed scaling enabled in Public preview
 
 -  Http 
 -  Azure Storage Queue
 -  Azure Service Bus
 -  Azure EventHub
 -  Kafka Trigger
+-  Timer Trigger
 
 ## Azure Regions 
 
-Container Apps support for Functions is currently in preview and is only available in the following regions:
-- Australia East
-- Central US
-- East US
-- East Us 2
-- North Europe
-- South Central US
-- UK South
-- West Europe
-- West US3
+Container Apps support for Functions is currently in preview and is  available on all Azure Container Apps supported regions. See the list of supported regions (here)[https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps]
+
 
 When your container is hosted in a [Consumption + Dedicated plan](https://learn.microsoft.com/en-us/azure/container-apps/plans#consumption-dedicated) structure, only the default Consumption plan is currently supported. Dedicated plans in this structure aren't yet supported for Functions. When running functions on Container Apps, you're charged only for the Container Apps usage. For more information, see the                                              [Azure Container Apps pricing page](https://azure.microsoft.com/pricing/details/container-apps/). For list of supported regions in this plan [see here](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview#supported-regions)
 
