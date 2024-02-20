@@ -233,12 +233,65 @@ az provider register --namespace Microsoft.OperationalInsights
 
 2\. Create azure container app environment
 
-Create an environment with an auto-generated Log Analytics workspace.
+# Workload Profiles in Azure Functions on Azure Container Apps
+
+A workload profile determines the amount of compute and memory resources available to the container apps deployed in an environment. Azure Functions on Azure Container Apps now supports workload profiles. Profiles are configured to fit the different needs of your applications.
+
+The Consumption workload profile is the default profile added to every Workload profiles environment type. You can add Dedicated workload profiles to your environment as you create an environment or after it's created. Read more about workload profile types supported [https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview](#).
 
 ```sh
-  az group create --name MyResourceGroup --location northeurope
-  az containerapp env create -n MyContainerappEnvironment -g MyResourceGroup --location northeurope
-  ```
+az group create --name MyResourceGroup --location northeurope
+```
+
+## Consumption
+
+Run serverless apps with support for scale-to-zero and pay only for resources your apps use with the consumption profile.
+
+Use the following commands to create a workload profiles environment:
+
+1. **Create workload profiles environment**
+
+```bash
+
+az containerapp env create \
+  --enable-workload-profiles \
+  --resource-group "<RESOURCE_GROUP>" \
+  --name "<NAME>" \
+  --location "<LOCATION>"
+```
+This command can take up to 10 minutes to complete.
+
+Check the status of your environment. The following command reports if the environment is created successfully.
+
+```sh
+az containerapp env show \
+  --name "<ENVIRONMENT_NAME>" \
+  --resource-group "<RESOURCE_GROUP>"
+```
+The provisioningState needs to report Succeeded before moving on to the next command.
+
+Create an environment with an auto-generated Log Analytics workspace.
+
+## Dedicated/GPUs
+
+You can also run apps with customized hardware and increased cost predictability using dedicated workload profiles. The Dedicated plan has a fixed cost for the entire environment regardless of how many workload profiles you're using.
+
+If you want to create an app in a Dedicated profile, you first need to add the profile to the environment.
+
+**Add a new workload profile to an existing environment.**
+
+```sh
+az containerapp env workload-profile add --resource-group <RESOURCE_GROUP> \
+ --name <ENVIRONMENT_NAME> --workload-profile-type <WORKLOAD_PROFILE_TYPE> \
+--workload-profile-name <WORKLOAD_PROFILE_NAME> \
+--min-nodes <MIN_NODES> --max-nodes <MAX_NODES>
+```
+
+The value you select for the <WORKLOAD_PROFILE_NAME> placeholder is the workload profile friendly name.
+Using friendly names allow you to add multiple profiles of the same type to an environment. The friendly name is what you use as you deploy and maintain a container app in a workload profile.
+
+For more details on edit/delete of profiles refer (here)[https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-manage-cli?tabs=external-env&pivots=aca-vnet-managed#add-profiles]
+``
 3\.  Create Storage account
 
 Use the [az storage account create](https://learn.microsoft.com/en-us/cli/azure/storage/account#az-storage-account-create) command to create a general-purpose storage account in your resource group and region:
@@ -272,8 +325,13 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 --storage-account <Storage_name> \
 --functions-version 4 \
 --runtime dotnet-isolated \
---image <DOCKER_ID>/<image_name>:<version> 
+--image <DOCKER_ID>/<image_name>:<version>
+--workload-profile-name  <WORKLOAD_PROFILE_NAME> \
+ --cpu <vcpus> \
+ --memory <memory>
+
 ```
+
 > Using ACR
 ---    
 ```sh
@@ -284,8 +342,26 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 --runtime dotnet-isolated \
 --image <acr login-server>/<image_name>:<version> \
 --registry-username <user_name> --registry-password <user_password>
+--workload-profile-name  <WORKLOAD_PROFILE_NAME> \
+ --cpu <vcpus> \
+ --memory <memory>
+
   ```
  ---
+
+ If you intent to use consumption configure --workload-profile-name  "Consumption" else provide the dedicated workload profile name
+Note: For consumption  
+```sh
+CPU supported range =min  0.5 vCPUs to 4 VCPUs max
+Memory = min 1Gi to 8Gi max
+default [1 2Gi] 
+```
+For Dedicated/GPU
+```sh
+CPU supported range =min  0.5 vCPUs to dedicated profile type max vCPUs limit
+Memory = min 1Gi to dedicated profile type max memory limit
+default [1 2Gi] 
+```
 
 In this example, replace **MyContainerappEnvironment** with the Azure container apps environment name. Also, replace <STORAGE_NAME> with the name of the account you used in the previous step, <APP_NAME> with a globally unique name appropriate to you, and <DOCKER_ID> or <login-server> with your Docker Hub ID or ACR , <user_name> with the username to log in to container registry(mostly applicable for ACR) and <user_password> with the password to log in to container registry. If
 stored as a secret, value must start with 'secretref:' followed by the secret name (mostly applicable for ACR).
@@ -328,6 +404,26 @@ az functionapp config container set --image <acr login-server>/<image_name>:<ver
 ```
 Note: --image should be in the format "<registry-login-server>/<image_name>:<version>"
 
+If you wish you update with a new workload profile type then use the below command.
+
+```sh
+az functionapp config container set --name <MyFunctionApp> \
+--resource-group <MyResourceGroup> \
+--workload-profile-name <workload profile name> \
+--cpu <> \
+--memory <>
+```
+
+If you need to set min replicas to avoid cold start problems then update your functions container app configuration
+
+```sh
+az functionapp config container set --name <MyFunctionApp> \
+--resource-group <MyResourceGroup> \
+--min-replicas <> \
+--max-replicas <>
+```
+
+
 ## Clean up resources
 
 If you\'re not going to continue on to the next sample function app, you can remove the Azure resources created during this quickstart with the following command.
@@ -349,6 +445,7 @@ Having issues? Let us know on GitHub by opening an issue [here](https://github.c
 -   Congratulations!! you have completed deploying your function app
     running in a azure container apps you can connect it to [Azure
     Storage by adding a Queue Storage output binding](https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-storage-queue-cli?pivots=programming-language-csharp&tabs=in-process%2Cv1%2Cbash%2Cbrowser) or Azure Service Bus or Azure EventHub or Kafka Trigger
+    Dapr extension for Azure Functions is supported in Azure Functions for ACA refer to this sample (Quickstart to deploy Azure Functions and Dapr on ACA using azd)[https://github.com/Azure/azure-functions-on-container-apps/tree/main/samples/azdsampleDAPRandFunctionsonACA] and docs page (Dapr Extension for Azure Functions)[https://review.learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-dapr?branch=pr-en-us-234679&tabs=in-process%2Cpreview-bundle-v4x%2Cbicep1&pivots=programming-language-csharp]
     
 
  ## TroubleShooting 
