@@ -291,7 +291,8 @@ The value you select for the <WORKLOAD_PROFILE_NAME> placeholder is the workload
 Using friendly names allow you to add multiple profiles of the same type to an environment. The friendly name is what you use as you deploy and maintain a container app in a workload profile.
 
 For more details on edit/delete of profiles refer (here)[https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-manage-cli?tabs=external-env&pivots=aca-vnet-managed#add-profiles]
-``
+
+
 3\.  Create Storage account
 
 Use the [az storage account create](https://learn.microsoft.com/en-us/cli/azure/storage/account#az-storage-account-create) command to create a general-purpose storage account in your resource group and region:
