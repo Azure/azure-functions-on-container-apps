@@ -11,8 +11,8 @@ The TimerTrigger makes it incredibly straightforward to execute a function on a 
 ### Prerequisites
 
 - An Azure account with an active subscription.
-- Azure Functions Core Tools
-- .NET 8.0 | .NET 7.01 | .NET 6.02 | .NET Framework 4.83
+- Azure Functions Core Tools - version 4.0.5455 +
+-  .NET 7.01 
 - Azure CLI
 
 ### Local Development
