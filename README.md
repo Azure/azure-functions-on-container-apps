@@ -417,7 +417,9 @@ az functionapp config container set --name <MyFunctionApp> \
 --min-replicas <> \
 --max-replicas <>
 ```
+## Managed resource groups
 
+Azure Function on Container Apps run your functionized container resources in specially managed resource groups, which helps protect the consistency of your apps by preventing unintended or unauthorized modification or deletion of resources in the managed group by users, groups, or service principles. This managed resource group is created for you the first time you create function app resources in a Container Apps environment. The underlying Azure container apps resource required by your containerized function app run in this managed resource group, and any other function apps that are created in the same environment use this existing group. A managed resource group gets removed automatically after all function app container resources are removed from the environment. While the managed resource group is visible, any attempts to modify or remove the managed resource group result in an error. To remove a managed resource group from an environment, remove all of the function app container resources and it gets removed for you. 
 
 ## Clean up resources
 
