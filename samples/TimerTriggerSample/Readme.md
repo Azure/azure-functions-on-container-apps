@@ -34,6 +34,9 @@ scheduled time.
 Follow the steps [here](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#create-azure-resources) to deploy the image as functions container and monitor
 the Live Metrics and Traces tables in AppInsights to ensure the job executed successfully in the scheduled time.
 
+### Reference
+Refer to following link for more function [samples](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer) of various languages
+
 ### Contributing
 Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests.
 
