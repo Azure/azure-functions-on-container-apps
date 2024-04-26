@@ -1,4 +1,4 @@
-# Azure Functions bindings for OpenAI's GPT engine
+# Azure Functions bindings for OpenAI's GPT engine - Assistants Feature deployed onto Azure Functions on Azure Container Apps
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build](https://dev.azure.com/azfunc/Azure%20Functions/_apis/build/status%2FExtension-OpenAI%2FAzure%20Functions%20OpenAI%20Extension%20PR%20CI?branchName=main)](https://dev.azure.com/azfunc/Azure%20Functions/_build/latest?definitionId=303&branchName=main)
