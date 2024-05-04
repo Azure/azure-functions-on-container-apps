@@ -32,7 +32,7 @@ Note: Each time this template is deployed, new resources get created with random
 ### Sample steps
 
 1. Import your image to the private ACR created above:
-   ```ps
+   ```
    az acr import \
      --name <acr name> \
      --source mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0 \
@@ -43,7 +43,7 @@ Note: Each time this template is deployed, new resources get created with random
 2. Update the image config on the function app to use private image:
 
    -  Step 1: Update the app setting for server url, by replacing function app name, resource group name and acr name appropriately.
-       ```ps
+       ```
        az functionapp config appsettings set \
        -n <function app name> \
        -g <resource group name>  \
@@ -53,7 +53,7 @@ Note: Each time this template is deployed, new resources get created with random
 
    - Step 2: Update the linuxFxVersion by replacing function app name, resource group name and acr name appropriately. (Note: If this command throws conflict, retry again in few minutes)
    
-        ```ps
+        ```
         az resource update \
         -g <resource group name> \
         -n <function app name>/config/web \
