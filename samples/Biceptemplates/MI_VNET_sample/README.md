@@ -40,24 +40,13 @@ Note: Each time this template is deployed, new resources get created with random
    ```
    Verify the image is imported correctly.
 
-2. Update the image config on the function app to use private image:
-
-   -  Step 1: Update the app setting for server url, by replacing function app name, resource group name and acr name appropriately.
-       ```
-       az functionapp config appsettings set \
-       -n <function app name> \
-       -g <resource group name>  \
-       --settings DOCKER_REGISTRY_SERVER_URL=<acr name>.azurecr.io
-       ```
-      Verify the app setting is updated correctly.
-
-   - Step 2: Update the linuxFxVersion by replacing function app name, resource group name and acr name appropriately. (Note: If this command throws conflict, retry again in few minutes)
-   
-        ```
-        az resource update \
-        -g <resource group name> \
-        -n <function app name>/config/web \
-        --resource-type 'Microsoft.Web/sites/config' \
-        --set properties.linuxFxVersion="DOCKER|<acr name>.azurecr.io/azure-functions/dotnet8-quickstart-demo:1.0"
-        ```
-      Verify the linuxFxVersion is updated correctly, in JSON View in Portal. 
+2. Update the image config on the function app to use private image: <br/>
+   In the below command, update the linuxFxVersion by replacing function app name, resource group name and acr name appropriately.
+   ```
+   az resource update \
+      -g <resource group name> \
+      -n <function app name>/config/web \
+      --resource-type 'Microsoft.Web/sites/config' \
+      --set properties.linuxFxVersion="DOCKER|<acr name>.azurecr.io/azure-functions/dotnet8-quickstart-demo:1.0"
+   ```
+   Verify the linuxFxVersion is updated correctly, in JSON View in Portal. 
