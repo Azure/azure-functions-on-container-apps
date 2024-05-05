@@ -4,6 +4,7 @@ param prefix string = newGuid()
 param location string
 param hasVnet bool
 param isVnetInternal bool
+param useSystemIdentity bool = false
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: '${prefix}-rg'
@@ -16,6 +17,16 @@ module common 'common.bicep' = {
   params: {
     prefix: prefix
     location: location
+    createUMI: !useSystemIdentity
+  }
+}
+
+module roleassignments 'roleassignments.bicep' = if (!useSystemIdentity) {
+  name: 'roleassignments'
+  scope: rg
+  params: {
+    prefix: prefix
+    principalId: common.outputs.identityPrincipalId
   }
 }
 
@@ -42,5 +53,17 @@ module functionapp 'functionapp.bicep' = {
     identityResourceId: common.outputs.identityResourceId
     identityClientId: common.outputs.identityClientId
     envId: acaenv.outputs.envId
+    useSystemIdentity: useSystemIdentity
   }
 }
+
+// redeploy function app to set acr creds after role assignments are done for system identity.
+/* module functionappAfterSI 'functionappAfterSI.bicep' = if (useSystemIdentity){
+  name: 'functionappAfterSI'
+  scope: rg
+  params: {
+    appLocation: location
+    appName: functionapp.outputs.functionappName
+    acrUrl: common.outputs.acrUrl
+  }
+} */

@@ -11,6 +11,7 @@ For MI integration, it creates:
   - Use keyvault references
   - Pull images from private ACR
   - Access storage account without connection strings.
+- Set `useSystemIdentity` = `true`, in order to use system assigned identity instead of user managed identity in above steps.
 
 For VNet integration, it provides two flags in params:
 - hasVnet: To create and add a VNet to the managed environment.
