@@ -10,3 +10,5 @@ param location = 'westcentralus'
 param hasVnet = false
 param isVnetInternal = false
 
+// set this to true to use system assigned identity
+param useSystemIdentity = false
