@@ -1,6 +1,6 @@
 # Create your first C# Durable Functions on Azure Container Apps
 
-[Durable Functions](https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview) is an extension of Azure Functions that lets you write stateful functions in a serverless environment. The extension manages state, checkpoints, and restarts for you.
+[Durable Functions](https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview) is an offering of Azure Functions that lets you write stateful functions in a serverless environment. The extension manages state, checkpoints, and restarts for you.
 
 This quickstart will show you how to create a Durable Function that runs on Azure Container Apps.
 
@@ -141,14 +141,14 @@ Make sure the package references are in the *.csproj* file:
 
 ## Create the required databases 
 
-You'll need a publicly accessible SQL Server instance. Follow [instructions](https://learn.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal#create-a-single-database) to create an Azure SQL Database. 
-
-You'll also need an Azure Storage account. Use the [az storage account create](https://learn.microsoft.com/en-us/cli/azure/storage/account#az-storage-account-create) command to create a general-purpose storage account:
+You'll need an Azure Storage account. Use the [az storage account create](https://learn.microsoft.com/en-us/cli/azure/storage/account#az-storage-account-create) command to create a general-purpose storage account:
 
 ```sh
 az storage account create --name <STORAGE_NAME> --location northeurope --resource-group MyResourceGroup --sku Standard_LRS
   ```
 Replace <STORAGE_NAME> with a unique name. Names must contain three to 24 characters numbers and lowercase letters only. Standard_LRS specifies a general-purpose account, which is [supported by Functions](https://learn.microsoft.com/azure/azure-functions/storage-considerations#storage-account-requirements). The --location value is a standard Azure region.
+
+You'll also need a publicly accessible SQL Server instance. Follow [instructions](https://learn.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal#create-a-single-database) to create an Azure SQL Database in "MyResourceGroup"
 
 ### Update Dockerfile with connection string information
 Update the following environment variables:
@@ -162,8 +162,7 @@ Obtain your Azure SQL database's connection string by navigating to the database
 
 Below is an example of the portal view for obtaining the Azure SQL connection string:
 
-![An Azure connection string as found in the portal
-](./media/sql_connection_string_portal.png)
+![An Azure connection string as found in the portal](./media/sql_connection_string_portal.png)
 
 Get your Azure Storage account's connection string by nativating to the storage account in the Azure portal. Then, under **Security + networking**, select **Acess keys**. 
 
@@ -203,7 +202,7 @@ Hub](https://hub.docker.com/_/microsoft-azure-functions-base)
 docker build --platform linux --tag <DOCKER_ID>/azuredurablefunctionsimage:v1.0.0 .
 ```
 
-If you have an M1 mac, use `--platform linux/amd64` instead. 
+> Note: If you have an M1 mac, use `--platform linux/amd64` instead. 
 
 In this example, replace \<DOCKER_ID\> with your Docker Hub account ID. When the command completes, you can run the new container locally.
 
@@ -212,14 +211,15 @@ In this example, replace \<DOCKER_ID\> with your Docker Hub account ID. When t
 docker run -p 8080:80 -it <DOCKER_ID>/azuredurablefunctionsimage:v1.0.0
 ```
 
-If you have an M1 mac, remember to specify the platform again ` --platform linux/amd64`.
+> Note: If you have an M1 mac, remember to use ` --platform linux/amd64`.
 
-At this point you should see an exception message saying you need to create a firewall rule for your client IP address for access to the SQL database. To do this, go to your database instance on Azure portal and click "Set server firewall" in the _Overview_ page. Then click "Add a firewall rule". You can set the _Start_ and _End IP_ as the IP address in the exception message. Remember to click "Save". 
+At this point you should see an exception message saying you need to create a firewall rule for your client IP address for access to the SQL server. To do this, go to your database server instance on Azure portal and look under the **Essentials** section on the top. Find **Neworking** and click on "Add a firewall rule". Give it a name and set the Start IP and End IP to be the address in the exception message. Remember to "Save". 
 
-3\. Now there should be no more errors when running the image. Browse to http://localhost:8080/api/DurableFunctionsOrchestrationCSharp_HttpStart to start your Durable Functions orchestration. You should see different URLs for the particular orchestration instance started: 
-![Triggering start of durable orchestration through HTTP](./media/http_start_orchestration.png)
+3\.**Ctrl**+**C** to stop running the image, and then rerun it. Now you should see no more errors. Browse to http://localhost:8080/api/DurableFunctionsOrchestrationCSharp_HttpStart to start your Durable Functions orchestration. You should see different URLs for the particular orchestration instance started: 
 
-Browse to *statusQueryGetUri* to get the status of the orchestration instance and the output:
+![Trigger start of durable orchestration through HTTP](./media/http_start_orchestration.png)
+
+Browse to *statusQueryGetUri* to get the status of the orchestration instance, output, and other details:
 ![Orchestration status](./media/orchestration_instance_status.png)
 
 4\. After you've verified the function app in the container, stop docker with **Ctrl**+**C**.
@@ -228,7 +228,7 @@ Browse to *statusQueryGetUri* to get the status of the orchestration instance an
 
 Docker Hub is a container registry that hosts images and provides image and container services. To share your image, which includes deploying to Azure, you must push it to a registry.
 
-> Note: Remember to remove connection strings from your Dockerfile before pushing. 
+> Note: Remember to remove your database connection strings before pushing! 
 
 - Sign in to Docker with the [docker login](https://docs.docker.com/engine/reference/commandline/login/) command, replacing  <docker_id> with your Docker ID. This command prompts you for your username and password. A "Login Succeeded" message confirms that you\'re signed in.
 -  Push the image to Docker Hub by using the [docker push](https://docs.docker.com/engine/reference/commandline/push/) command, again replacing <docker_id> with your Docker ID.
@@ -290,16 +290,17 @@ By this point, you should see the following resources created in "MyResourceGrou
  - Storage account
  - SQL database
  - Container app environment 
- - Application Insights 
  - Functions app
+ - Application Insights 
+
 
 5\. Set required app settings
 
-Get you Azure Storage and Azure SQL connection strings from Azure portal. Then go to your function app on portal, expand **Settings**, then click **Configuration**. Add `SQLDB_Connection` app settings and set its value to the SQL connection strings. The `AzureWebJobsStorage` setting should already be there - check that it's set to your storage account's connection string. Click Apply to update the settings. 
+Get you Azure Storage and Azure SQL connection strings. Then go to your function app on portal, expand **Settings**, then click **Environment variables**. Add `SQLDB_Connection` app settings and set its value to the SQL connection strings, then click Apply. The `AzureWebJobsStorage` setting should already be there - check that it's set to your storage account's connection string. Click Apply again and confirm to update the settings. 
 
 6\. Start your Durable Functions orchestration
 
-Because the sample code above uses an HTTP trigger to start the Durable Functions orchestration, you can go to the URL associated with the HTTP trigger to start the orchestration. To do that, find the URL of your app on Azure Portal (look on the top right of the **Essentials** section in the **Overview** tab), it should look something like the following:
+Go to the URL associated with the HTTP trigger to start the orchestration. To do that, find the URL of your app on Azure Portal (look on the top right of the **Essentials** section in the **Overview** tab), it should look something like the following:
 
 ```
 https://<< your app name >>.northeurope.azurecontainerapps.io
@@ -313,7 +314,7 @@ Add the following to the end of the URL:
 
 In the sample code above, the name is `DurableFunctionsOrchestrationCSharp_HttpStart`. 
 
-You should see results similar to what you saw previously when testing locally, but your app is now running on Azure. 
+You should see results similar to what you saw previously when testing locally. 
 
 ## Clean up resources
 If you're not going to continue on to the next sample function app, you can remove the Azure resources created during this quickstart with the following command.
