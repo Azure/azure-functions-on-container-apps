@@ -164,7 +164,7 @@ Below is an example of the portal view for obtaining the Azure SQL connection st
 
 ![An Azure connection string as found in the portal](./media/sql_connection_string_portal.png)
 
-Get your Azure Storage account's connection string by nativating to the storage account in the Azure portal. Then, under **Security + networking**, select **Acess keys**. 
+Get your Azure Storage account's connection string by navigating to the storage account in the Azure portal. Then, under **Security + networking**, select **Access keys**. 
 
 ### Specify MSSQL as the Durable Functions storage backend in your *host.json*
 
