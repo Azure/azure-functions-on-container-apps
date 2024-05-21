@@ -2,7 +2,7 @@
 
 [Durable Functions](https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview) is an offering of Azure Functions that lets you write stateful functions in a serverless environment. The extension manages state, checkpoints, and restarts for you.
 
-This quickstart will show you how to create a Durable Function that runs on Azure Container Apps.
+This quickstart will show you how to create a Durable Function that runs on Azure Container Apps, yielding the same app as the one in the *LocalFunctionProj* directory. 
 
 > Note: Only the [MSSQL storage provider](https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-storage-providers#mssql) is currently supported for running Durable Functions in Azure Container Apps. 
 
@@ -164,7 +164,7 @@ Below is an example of the portal view for obtaining the Azure SQL connection st
 
 ![An Azure connection string as found in the portal](./media/sql_connection_string_portal.png)
 
-Get your Azure Storage account's connection string by nativating to the storage account in the Azure portal. Then, under **Security + networking**, select **Acess keys**. 
+Get your Azure Storage account's connection string by nativating to the storage account in the Azure portal. Then, under **Security + networking**, select **Access keys**. 
 
 ### Specify MSSQL as the Durable Functions storage backend in your *host.json*
 
@@ -309,10 +309,10 @@ https://<< your app name >>.northeurope.azurecontainerapps.io
 Add the following to the end of the URL:
 
 ```
-/api/{your http trigger name}
+/api/DurableFunctionsOrchestrationCSharp_HttpStart
 ```
 
-In the sample code above, the name is `DurableFunctionsOrchestrationCSharp_HttpStart`. 
+In the sample code above, the name of the HTTP trigger is `DurableFunctionsOrchestrationCSharp_HttpStart`. Replace as needed.  
 
 You should see results similar to what you saw previously when testing locally. 
 
