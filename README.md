@@ -1,4 +1,4 @@
-## Azure Functions on Azure Container Apps (Public Preview) ![image](https://user-images.githubusercontent.com/45637559/229790891-e36169d8-1cd3-497b-85e2-982874ef6584.png)
+## Azure Functions on Azure Container Apps ![image](https://user-images.githubusercontent.com/45637559/229790891-e36169d8-1cd3-497b-85e2-982874ef6584.png)
 
 Azure functions on container apps  helps developers to quickly build event driven, cloud native apps, with the flexibility to run functions along with other microservices, APIs, websites,  workflows or any container hosted programs. You can leverage functions programming model and write code using your preferred programming language or framework that Azure functions supports . You will also get the triggers, bindings and get that first class event driven, cloud native experience. Azure Functions is running on the platform service powered by Azure Container Apps  to run microservices in containers without managing infrastructure. Container Apps Environment is built on a foundation of powerful open-source technology. Behind the scenes, every container app runs on Azure Kubernetes Service, enables to build microservices with full support for Distributed Application Runtime (Dapr) and scale dynamically based on HTTP traffic or events powered by Kubernetes Event-Driven Autoscaling (KEDA). 
 
@@ -305,7 +305,7 @@ Replace <STORAGE_NAME> with a name that is appropriate to you and unique in Az
 publicly accessible image so username/password is not required) 
 ---
 ```sh  
-azurefunctionstest.azurecr.io/azure-functions/dotnet7-quickstart-demo:1.0
+mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0
   ```
 ---
     
