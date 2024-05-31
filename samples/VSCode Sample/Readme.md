@@ -157,6 +157,11 @@ Following the prompts, provide this information:
 
  A notification appears after your function app is created, and the deployment package is applied. To view the creation and deployment results, including the Azure resources that you created, select View Output in this notification.
 You may also check the output console with Azure Functions selected to view the deployement logs
+
+Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to view your Azure Functions on Azure Container apps - http trigger that you just created and copy the url from the http trigger function blade - Get function URL
+
+![image](https://github.com/Azure/azure-functions-on-container-apps/assets/45637559/fd4c0411-8f3d-45da-b48c-b5248941e82b)
+
  
 
  Note: At this point Deploy to Azure is not supported
