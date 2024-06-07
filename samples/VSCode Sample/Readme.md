@@ -192,8 +192,9 @@ Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to vi
        i\.    Using AzCLI follow the instructions [here](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#update-function-container-image)
     
        ii\.  Using Azure Portal Goto Functions Overview > Configuration > Update the Image tag from the drop down as shown below
-    
-            ![image](https://github.com/Azure/azure-functions-on-container-apps/assets/45637559/27d50128-8d1a-4bb9-8ad6-69a3f8f79d6b)
+
+    ![image](https://github.com/Azure/azure-functions-on-container-apps/assets/45637559/fb5d5e09-534c-40fa-8ef5-5abdec93d8f7)
+
     
 
        iii\. Inacase you wish to redeploy the app with updated image details then modify the image name in your Deployment pipelines/ARM/Bicep templates and re-deploy them
