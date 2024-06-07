@@ -175,8 +175,7 @@ Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to vi
     ```sh
     acr login --name <acrname>
     docker build -t <imagename>:<tagname>
-    
-   ```
+    ``
  
  2. Push the image with an updated version tag to the container registry that VSCode created
 
@@ -185,12 +184,18 @@ Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to vi
     az acr build --registry <acrname> --image <acrname>.azurecr.io/<imagename>:<tagname> .
     or
     docker push <acrname>.azurecr.io/<imagename>:<tagname>
-   ```
+   ``
+   
 
  3. Update the configuration of the Azure Functions on ACA resource
-       i.  Using AzCLI follow the instructions [here](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#update-function-container-image)
-       ii. Using Azure Portal Goto Functions Overview > Configuration > Update the Image tag from the drop down
-       iii.Inacase you wish to redeploy the app with updated image details then modify the image name in your Deployment pipelines/ARM/Bicep templates and re-deploy them
+    
+       i\.    Using AzCLI follow the instructions [here](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#update-function-container-image)
+       ii\.  Using Azure Portal Goto Functions Overview > Configuration > Update the Image tag from the drop down as shown below
+            ![image](https://github.com/Azure/azure-functions-on-container-apps/assets/45637559/27d50128-8d1a-4bb9-8ad6-69a3f8f79d6b)
+
+       iii\. Inacase you wish to redeploy the app with updated image details then modify the image name in your Deployment pipelines/ARM/Bicep templates and re-deploy them
+
+    
 
 
 
