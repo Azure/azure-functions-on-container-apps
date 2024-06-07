@@ -166,6 +166,32 @@ Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to vi
 
  Note: At this point Deploy to Azure is not supported
 
+ ## Update code or container image
+
+ If you wish you update code then perform below steps:
+ 
+ 1. Rebuild your image post making changes to the code by following below steps
+    
+    ```sh
+    acr login --name <acrname>
+    docker build -t <imagename>:<tagname>
+    
+   ```
+ 
+ 2. Push the image with an updated version tag to the container registry that VSCode created
+
+      ```sh
+      docker tag <imagename>:<tagname> <acrname>.azurecr.io/<imagename>:<tagname>
+    az acr build --registry <acrname> --image <acrname>.azurecr.io/<imagename>:<tagname> .
+    or
+    docker push <acrname>.azurecr.io/<imagename>:<tagname>
+   ```
+
+ 3. Update the configuration of the Azure Functions on ACA resource
+       i.  Using AzCLI follow the instructions [here](https://github.com/Azure/azure-functions-on-container-apps/blob/main/README.md#update-function-container-image)
+       ii. Using Azure Portal Goto Functions Overview > Configuration > Update the Image tag from the drop down
+       iii.Inacase you wish to redeploy the app with updated image details then modify the image name in your Deployment pipelines/ARM/Bicep templates and re-deploy them
+
 
 
 
