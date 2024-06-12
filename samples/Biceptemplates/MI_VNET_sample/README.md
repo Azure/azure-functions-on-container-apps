@@ -47,6 +47,7 @@ Note: Each time this template is deployed, new resources get created with random
    az resource update \
       -g <resource group name> \
       -n <function app name>/config/web \
+      --subscription <subscription name> \
       --resource-type 'Microsoft.Web/sites/config' \
       --set properties.linuxFxVersion="DOCKER|<acr name>.azurecr.io/azure-functions/dotnet8-quickstart-demo:1.0"
    ```
