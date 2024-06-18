@@ -2,8 +2,8 @@ targetScope = 'subscription'
 
 param prefix string = newGuid()
 param location string
-param hasVnet bool
-param isVnetInternal bool
+param hasVnet bool = false
+param isVnetInternal bool = false
 param useSystemIdentity bool = false
 
 resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
