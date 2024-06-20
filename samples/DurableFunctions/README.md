@@ -281,6 +281,7 @@ az functionapp create --resource-group MyResourceGroup --name <functionapp_name>
 --storage-account <Storage_name> \
 --functions-version 4 \
 --runtime dotnet-isolated \
+--min-replicas 1 \
 --image <DOCKER_ID>/<image_name>:<version> 
 ```
 
