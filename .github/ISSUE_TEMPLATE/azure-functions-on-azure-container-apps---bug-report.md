@@ -11,6 +11,10 @@ assignees: ''
 
 **Which language are you using?**
 
+**Provide resource details**
+ 1. Function app name
+ 2. Resource Id
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
