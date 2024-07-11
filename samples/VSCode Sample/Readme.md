@@ -170,7 +170,7 @@ Congratulations!! Proceed to Azure Portal or Get function URL from VScode  to vi
 
  If you wish you update code then perform below steps:
  
- 1. Rebuild your image post making changes to the code by following below steps
+ 1. Rebuild your image post making changes to the code by following below steps. For detailed steps see [here](https://github.com/Azure/azure-functions-on-container-apps?tab=readme-ov-file#build-the-container-image-and-test-locally)
     
     ```sh
     acr login --name <acrname>
