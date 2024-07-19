@@ -33,3 +33,21 @@ Send an HTTP POST request to https://<defaultHostName>/admin/host/synctriggers?c
 
 } 
 That means your subscription whitelisting has expired, please reach out to get your subscription whitelisted. 
+
+>9) In case you see below error and trying to access underlying Azure Container Apps resource
+_The access is denied because of the deny assignment with name '605xxxxxxxxxxxxxx' and Id '605xxxxxxxx' at scope '/subscriptions/xxxxxxxxxxx/resourceGroups/mrgname '._
+
+## Solution
+Users are recommended not to delete/modify the underlying azure container apps resource. As this resource is locked down and will not allow user, group, or service principal to modify/update or deletes. 
+This is to protect the function app resource from getting into an inconsistent state.
+
+>10) If you are facing issues with naming convention while using private docker registry. Please follow below guidance
+Provide --image with registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> 
+
+az functionapp config container set `
+  --name <FUNCTION APP NAME> `
+  --resource-group <RESOURCE GROUP> `
+  --image registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> `
+  --registry-server registry.hub.docker.com `
+  --registry-username <DOCKER ID> `
+  --registry-password <PASSWORD>
