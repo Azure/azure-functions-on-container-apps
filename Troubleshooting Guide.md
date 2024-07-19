@@ -42,7 +42,7 @@ Users are recommended not to delete/modify the underlying azure container apps r
 This is to protect the function app resource from getting into an inconsistent state.
 
 >10) If you are facing issues with naming convention while using private docker registry. Please follow below guidance
-Provide --image with registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> 
+Provide --image with registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> . For more details refer to this [github discussion](https://github.com/Azure/azure-functions-on-container-apps/issues/66)
 
 az functionapp config container set `
   --name <FUNCTION APP NAME> `
