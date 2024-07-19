@@ -446,6 +446,8 @@ Having issues? Let us know on GitHub by opening an issue [here](https://github.c
     running in a azure container apps you can connect it to [Azure
     Storage by adding a Queue Storage output binding](https://learn.microsoft.com/en-us/azure/azure-functions/functions-add-output-binding-storage-queue-cli?pivots=programming-language-csharp&tabs=in-process%2Cv1%2Cbash%2Cbrowser) or Azure Service Bus or Azure EventHub or Kafka Trigger
     Dapr extension for Azure Functions is supported in Azure Functions for ACA refer to this sample (Quickstart to deploy Azure Functions and Dapr on ACA using azd)[https://github.com/Azure/azure-functions-on-container-apps/tree/main/samples/azdsampleDAPRandFunctionsonACA] and docs page (Dapr Extension for Azure Functions)[https://review.learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-dapr?branch=pr-en-us-234679&tabs=in-process%2Cpreview-bundle-v4x%2Cbicep1&pivots=programming-language-csharp]
+
+- to enable Continuous Deployment check out the [Github Actions](https://github.com/Azure/azure-functions-on-container-apps/tree/main/samples/GitHubActions) or [Azure Pipeline tasks sample](https://github.com/Azure/azure-functions-on-container-apps/tree/main/samples/AzurePipelineTasks)
     
 
  ## TroubleShooting 
