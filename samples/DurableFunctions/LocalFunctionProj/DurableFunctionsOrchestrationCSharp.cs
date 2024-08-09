@@ -54,7 +54,7 @@ namespace Company.Function
 
             // Returns an HTTP 202 response with an instance management payload.
             // See https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-http-api#start-orchestration
-            return client.CreateCheckStatusResponse(req, instanceId);
+            return await client.CreateCheckStatusResponseAsync(req, instanceId);
         }
     }
 }
