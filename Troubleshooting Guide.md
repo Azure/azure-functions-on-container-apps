@@ -23,18 +23,8 @@ Send an HTTP POST request to https://<defaultHostName>/admin/host/synctriggers?c
 
   dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.7.0 
 
-> 8) Incase you see below error:
 
-{ 
-
-  "Code": "BadRequest", 
-
-  "Message": "Requested features are not allowed for subscription.", 
-
-} 
-That means your subscription whitelisting has expired, please reach out to get your subscription whitelisted. 
-
->9) In case you see below error and trying to access underlying Azure Container Apps resource
+>8) In case you see below error and trying to access underlying Azure Container Apps resource
 _The access is denied because of the deny assignment with name '605xxxxxxxxxxxxxx' and Id '605xxxxxxxx' at scope '/subscriptions/xxxxxxxxxxx/resourceGroups/mrgname '._
 
 ## Solution
