@@ -5,7 +5,23 @@
 This is a sample project to get started with Volume mounts on Functions on ACA.
 It creates a storage account with file share. Configures the storage on ACA environment resource, and then sets up storage mount on the Function on ACA resource using the ACA env storage details.
 
-- Reference: [how to set up storage mounts in Container App Environment](https://learn.microsoft.com/en-us/azure/container-apps/storage-mounts?tabs=smb&pivots=azure-resource-manager)
+Setting use_nfs_mount = true in the parameters will create a vnet and a premium storage with nfs based file share with related setup and use it in the ACA env.
+
+## How to configure storage mounts for Fn on ACA
+
+Storage mount creation and connection setup is done at Environment level similar to regular ACA apps as documented at [how to set up storage mounts in Container App Environment](https://learn.microsoft.com/en-us/azure/container-apps/storage-mounts?tabs=smb&pivots=azure-resource-manager).
+
+To bring in the configured storage mounts as "volumes" for Fn on ACA, we can use the currently available storage account configuration API under websites , with few variations wrt the properties in [AzureStorageInfoValue](https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/create-or-update-configuration?view=rest-appservice-2023-12-01&tabs=HTTP#azurestorageinfovalue): 
+
+- `accessKey`: Not applicable for Functions on ACA as connection setup is done at environment level. Can be skipped or set as empty.
+- `accountName`: Should be the name of storage resource configured under Container Apps Environment.  
+Note: If this is set as empty, it will be considered an [`EmptyDir` (Replica scoped storage type)](https://learn.microsoft.com/en-us/azure/container-apps/storage-mounts?tabs=smb&pivots=azure-resource-manager#replica-scoped-storage)
+- `mountPath` - Path within the container at which the volume should be mounted.
+- `protocol` – Nfs or Smb. (Http is not supported).
+Note: This is ignored when accountName is empty, as protocol is not applicable for EmptyDir storage type.
+- `shareName` – This can be used to provide [`subpath`](https://learn.microsoft.com/en-us/rest/api/containerapps/container-apps/get?view=rest-containerapps-2024-03-01&tabs=HTTP#volumemount) which is the path within the volume from which the container's volume should be mounted. Defaults to ""
+- `state` – This is not supported and always set to OK
+- `type` – Only `AzureFiles` is supported for Fn on ACA.
 
 ## Resource creation
 

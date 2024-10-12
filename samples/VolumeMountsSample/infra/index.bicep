@@ -2,6 +2,9 @@ targetScope = 'subscription'
 
 param dep_name string
 param location string
+param use_nfs_mount bool
+param sub_path string
+param use_read_only bool
 
 var suffix = uniqueString(dep_name, subscription().id)
 
@@ -15,6 +18,9 @@ module volumemount 'volumemount.bicep' = {
   scope: rg
   params: {
     suffix: suffix
+    use_nfs_mount: use_nfs_mount
+    sub_path: sub_path
+    use_read_only: use_read_only
   }
 }
 
