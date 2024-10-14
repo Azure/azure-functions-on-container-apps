@@ -52,7 +52,7 @@ resource share 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-04-01
 }
 
 @description('VNET for ACA env when using Nfs volume mounts')
-resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = if (use_nfs_mount) {
+resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName
   location: location
   properties: {
