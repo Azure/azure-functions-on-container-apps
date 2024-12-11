@@ -44,12 +44,14 @@ For a Kafka trigger to dynamically scale when connected to Event Hubs, the usern
 For the built-in Container Apps policy definitions, currently only environment-level policies apply to Azure Functions containers.
 - You can use managed identities for these connections:
   - Deployment from an Azure Container Registry
-  -  Triggers and bindings such as  Azure Event Grid, Azure Event Hubs, Azure Blob Storage(event based does not need MI connection to Blob), Azure Queue Storage, Azure Service Bus only
+  -  Triggers and bindings such as Azure Event Hubs, Azure Queue Storage, Azure Service Bus only
   - Required host storage connection
 - Durable Functions (MSSQL storage provider) will scale from and to zero and beyond with connection string only. MI is not yet supported. This is coming soon.
 - You currently can't move a Container Apps hosted function app deployment between resource groups or between subscriptions. Instead, you would have to recreate the existing containerized app deployment in a new resource group, subscription, or region.
 - When using Container Apps, you don't have direct access to the lower-level Kubernetes APIs.
 - The containerapp extension conflicts with the appservice-kube extension in Azure CLI. If you have previously published apps to Azure Arc, run az extension list and make sure that appservice-kube isn't installed. If it is, you can remove it by running az extension remove -n appservice-kube.
+## Note 
+ Azure Blob Storage(event based), Azure Event Grid do not need Managed Identity connections configured to these Azure services
 
 ## Azure Regions 
 
