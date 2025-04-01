@@ -315,6 +315,162 @@ az storage account create --name <STORAGE_NAME> --location northeurope --resourc
 Replace <STORAGE_NAME> with a name that is appropriate to you and unique in Azure Storage. Names must contain three to 24 characters numbers and lowercase letters only. Standard_LRS specifies a general-purpose account, which is [supported by Functions](https://learn.microsoft.com/en-us/azure/azure-functions/storage considerations#storage-account-requirements). The --location value is a standard Azure region.
 
 ## Create the function app
+
+## Using Azure Container Apps Client - AzCLI and Microsoft.App 
+
+With Azure Functions on Azure Container Apps(v2) the functions image can be deployed directly into Azure Container Apps using Azure Container Apps clients
+> Note: **If you wish to use the quick start demo Http trigger sample you can include the below image url for --image parameter(this is a
+publicly accessible image so username/password is not required) 
+---
+```sh  
+mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0
+  ```
+---
+    
+> OR you may keep the image url ready for an existing image that you have in your repo which is already "build" 
+    for eg: <hub-user>/<repo-name>:<tag> ->  mydockerusr/azurefunctionsimage:v2
+---
+```sh
+az containerapp create --resource-group MyResourceGroup \
+--name $FUNCTIONS_CONTAINER_APP_NAME \
+--environment $ENVIRONMENT_NAME \
+--image mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0 \
+--ingress external \
+--target-port 80 \
+--kind functionapp \
+--query properties.outputs.fqdn
+```
+--------
+
+This command returns the URL of your Functions app. Copy this URL and paste it into a web browser.
+
+Append /api/HttpExample to the end of the URL.
+
+A message stating "HTTP trigger function processed a request" is returned in the browser.
+
+> For eg: The Url generated would be - http://myfuncapponaca.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/HttpExample
+
+> Using Docker Hub
+  ---
+```sh
+az containerapp create --resource-group MyResourceGroup --name <function_containerapp_name> \
+--environment MyContainerappEnvironment \
+--image <DOCKER_ID>/<image_name>:<version>
+--workload-profile-name  <WORKLOAD_PROFILE_NAME> \
+ --cpu <vcpus> \
+ --memory <memory> \
+--ingress external \
+--target-port 80 \
+--kind functionapp \
+--env-vars AzureWebJobsStorage=<your-storage-connection-string> APPLICATIONINSIGHTS_CONNECTION_STRING=<your-application-insights-connection-string>
+--query properties.outputs.fqdn
+
+```
+---
+
+> Using ACR
+---    
+```sh
+az containerapp create --resource-group MyResourceGroup --name <function_containerapp_name> \
+--environment MyContainerappEnvironment \
+--image <acr login-server>/<image_name>:<version> \
+--registry-username <user_name> --registry-password <user_password>
+--workload-profile-name  <WORKLOAD_PROFILE_NAME> \
+ --cpu <vcpus> \
+ --memory <memory> \
+--ingress external \
+--target-port 80 \
+--kind functionapp \
+--env-vars AzureWebJobsStorage=<your-storage-connection-string> APPLICATIONINSIGHTS_CONNECTION_STRING=<your-application-insights-connection-string>
+--query properties.outputs.fqdn
+
+```
+---
+
+ The environment variables can contain secret key-values or managed identity references to storage. 
+
+ If you intent to use consumption configure --workload-profile-name  "Consumption" else provide the dedicated workload profile name
+Note: For consumption  
+```sh
+CPU supported range =min  0.25 vCPUs to 4 VCPUs max
+Memory = min 0.5Gi to 8Gi max
+default [0.5 1Gi] 
+```
+For Dedicated/GPU
+```sh
+CPU supported range =min  0.25 vCPUs to dedicated profile type max vCPUs limit
+Memory = min 0.5Gi to dedicated profile type max memory limit
+default [0.5 1Gi] 
+```
+
+In this example, replace **MyContainerappEnvironment** with the Azure container apps environment name. If stored as a secret, value must start with 'secretref:' followed by the secret name (mostly applicable for ACR).
+
+The *--image* parameter specifies the image to use for the function app. 
+
+**Set required app settings**
+
+Run the following commands to create an app setting for the storage account connection string:
+```sh
+az storage account show-connection-string --resource-group <Resource_group> --name <STORAGE_NAME> --query connectionString --output tsv
+ ```
+Copy the output of the above and replace below at <storageConnectionString>
+    
+```sh
+az containerapp update \
+  --name <your-containerapp-name> \
+  --resource-group <your-resource-group> \
+  --set-env-vars AzureWebJobsStorage=<your-new-storage-connection-string> \
+                APPLICATIONINSIGHTS_CONNECTION_STRING=<your-new-application-insights-connection-string>"
+```
+
+## Invoke the function on Azure
+
+Incase your function uses an HTTP trigger, you invoke it by making an HTTP request to its URL in the browser or with a tool like curl.
+Execute below command to get the Invoke URL
+    
+```sh
+az containerapp show \
+  --name <your-containerapp-name> \
+  --resource-group <your-resource-group> \
+  --query properties.configuration.ingress.fqdn \
+  --output tsv
+```
+This command returns the URL of your Functions app. Copy this URL and paste it into a web browser.
+
+Append /api/HttpExample to the end of the URL.
+
+A message stating "HTTP trigger function processed a request" is returned in the browser.
+  
+> For eg: The Url generated would be - http://myfuncapponaca.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/httpexample
+
+## Update function container image
+
+If you wish to make changes to your code, modify the image with new version tag and build it, and then finally update the function's container app image please use below command. 
+Note: Below sample for docker hub based image
+
+```sh
+az containerapp update -n <my-funccontainerapp> -g <MyResourceGroup> --image <myregistry.azurecr.io/my-funcapp:v2.0> \
+ --registry-password <Password>  --registry-username <DockerUserId> 
+```
+Note: --image should be in the format "<registry-login-server>/<image_name>:<version>"
+
+If you wish you update with a new workload profile type then use the below command.
+
+```sh
+az containerapp update -n <my-funccontainerapp> -g <MyResourceGroup> \
+--workload-profile-name <workload profile name> \
+--cpu <> \
+--memory <>
+```
+
+If you need to set min replicas to avoid cold start problems then update your functions container app configuration
+
+```sh
+az containerapp update -n <my-funccontainerapp> -g <MyResourceGroup> --cpu 0.5 --memory 1.0Gi --min-replicas 4 --max-replicas 8
+
+```
+
+## Using Azure Functions Client Tooling
  
  Run the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/functionapp#az-functionapp-create) command to create a new function app in the new managed environment backed by azure container apps.
  
