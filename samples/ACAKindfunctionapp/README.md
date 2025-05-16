@@ -6,7 +6,7 @@ This repository provides a minimal Bicep template (`main.bicep`) to deploy Azure
 
 ## 1. Introduction
 
-Azure Container Apps now supports running Azure Functions as a “functionapp” kind of container workload. This enables you to combine the rich programming model and auto-scaling capabilities of Azure Functions with the flexible, serverless container hosting environment of Container Apps.
+Azure Container Apps now includes **native Azure Functions** support by setting the `kind=functionapp` property on a Container App resource. This enables you to combine the rich programming model and auto-scaling capabilities of Azure Functions with the flexible, serverless container hosting environment of Container Apps.
 - Read the official announcement blog post:  
   https://techcommunity.microsoft.com/blog/AppsonAzureBlog/announcing-native-azure-functions-support-in-azure-container-apps/4414039
 - Learn more in the product documentation:  
@@ -17,21 +17,28 @@ Azure Container Apps now supports running Azure Functions as a “functionapp”
 ## 2. Template Structure
 
 The provided `main.bicep` template does the following:  
-1. **Creates a Log Analytics workspace** for diagnostics and monitoring.  
-2. **Provisions a Container Apps environment** with Consumption‐based workload profile.  
-3. **Deploys a Storage account** and **Application Insights** for function host storage and telemetry.  
-4. **Deploys the Functions Container app** (kind=`functionapp`) using specified Docker image, runtime, and secrets.
-5. **Outputs** the resource ID and fully qualified domain name (FQDN) of your Functions Container App endpoint.
+1. Creates a Log Analytics workspace for diagnostics and monitoring.  
+2. Provisions a Container Apps environment with Consumption‐based workload profile.  
+3. Deploys a Storage account and Application Insights for function host storage and telemetry.  
+4. Deploys the Functions Container app (with `kind=functionapp`) using the specified Docker image, runtime, and secrets.
+   - The template uses a quickstart functions docker image. You can replace it with your own image that is compatible with Azure Functions host expectations - [Create a function app in a local Linux container](https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-container-registry).
+5. Outputs the resource Id and fully qualified domain name (FQDN) endpoint of your Functions Container App.
 
 ---
 
 ## 3. Deployment
 
-1. **Clone or download** `main.bicep` file from current folder.   
+1. Clone or download the `main.bicep` file from the current folder.   
 
-2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and [Bicep CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/install) installed.    
+1. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and [Bicep CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/install) installed.    
+
+1. Ensure the following Resource Providers are registered in your subscription:
+   - Microsoft.App
+   - Microsoft.OperationalInsights
+   - Microsoft.Insights
+   - Microsoft.Storage
  
-3. Log in and select your target subscription and resource group:  
+1. Log in and select your target subscription and resource group:  
     ```bash
     SUBSCRIPTION_ID="<your-subscription-id>"
     RESOURCE_GROUP="<your-resource-group-name>"
@@ -41,7 +48,13 @@ The provided `main.bicep` template does the following:
     az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
     ```
 
-4. **Deploy the Bicep template** using the Azure CLI:  
+1. Deploy the Bicep template using the Azure CLI:
+    > [!WARNING]
+    > This sample uses connection strings to keep the template lightweight. For production scenarios, it's strongly recommended to use [Managed Identity](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=servicebus&pivots=programming-language-python#configure-an-identity-based-connection) for improved security and operational best practices.
+
+    > **Note:**  
+    > All required parameters have default values, but you can override them by passing `--parameters` in the `az deployment group create` command.
+
     ```bash
     DEPLOYMENT_NAME="aca-functions-deployment"
     az deployment group create \
@@ -51,17 +64,17 @@ The provided `main.bicep` template does the following:
     ```
     View the deployment progress in the Azure portal or via the CLI. The deployment may take a few minutes to complete.
 
-5. **Access your Functions Container App**:
-    After deployment, you can find the FQDN of your Functions Container App in the output of the deployment. You can also view it in the Azure portal under the Container Apps resource.
+1. Access your Functions Container App:
+    After deployment, the output will display the fully qualified domain name (FQDN) of your Functions Container App. You can also find it in the Azure portal under the **Container Apps** resource, listed with the type `Container App (Function)`.
 
     To test your function, you can use `curl` or any HTTP client:
     ```bash
     curl -X GET "https://<your-app-name>.<environment-identifier>.<region>.azurecontainerapps.io/api/<your-function-name>"
     ```
 
-6. **Clean up resources** when done:
+1. Clean up resources when done:
     ```bash
     az group delete --name "$RESOURCE_GROUP" --yes --no-wait
     ``` 
 
-For more detail on parameters and customization, edit the main.bicep file as needed.
+For additional customization, modify the `main.bicep` file accordingly.
