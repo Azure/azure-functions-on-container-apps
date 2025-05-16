@@ -27,8 +27,9 @@ The provided `main.bicep` template does the following:
 
 ## 3. Deployment
 
-1. **Clone or download** this repository. 
-2. 2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and [Bicep CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/install) installed.    
+1. **Clone or download** `main.bicep` file from current folder.   
+
+2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and [Bicep CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/install) installed.    
  
 3. Log in and select your target subscription and resource group:  
     ```bash
@@ -39,6 +40,7 @@ The provided `main.bicep` template does the following:
     az account set --subscription "$SUBSCRIPTION_ID"
     az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
     ```
+
 4. **Deploy the Bicep template** using the Azure CLI:  
     ```bash
     DEPLOYMENT_NAME="aca-functions-deployment"
@@ -47,10 +49,15 @@ The provided `main.bicep` template does the following:
         --resource-group "$RESOURCE_GROUP" \
         --template-file main.bicep
     ```
-5. **Monitor the deployment**:
+    View the deployment progress in the Azure portal or via the CLI. The deployment may take a few minutes to complete.
+
+5. **Access your Functions Container App**:
+    After deployment, you can find the FQDN of your Functions Container App in the output of the deployment. You can also view it in the Azure portal under the Container Apps resource.
+
+    To test your function, you can use `curl` or any HTTP client:
     ```bash
-    az deployment group show --name "$DEPLOYMENT_NAME" --resource-group "$RESOURCE_GROUP"
-    ``` 
+    curl -X GET "https://<your-app-name>.<environment-identifier>.<region>.azurecontainerapps.io/api/<your-function-name>"
+    ```
 
 6. **Clean up resources** when done:
     ```bash
