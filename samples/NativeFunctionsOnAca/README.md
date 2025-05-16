@@ -28,7 +28,7 @@ The provided `main.bicep` template does the following:
 ## 3. Deployment
 
 1. **Clone or download** this repository.  
-2. Ensure you have the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed.  
+2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed.  
 3. Log in and select your target subscription and resource group:  
     ```bash
     SUBSCRIPTION_ID="<your-subscription-id>"
@@ -44,7 +44,7 @@ The provided `main.bicep` template does the following:
     az deployment group create \
         --name "$DEPLOYMENT_NAME" \
         --resource-group "$RESOURCE_GROUP" \
-        --template-file main.bicep \
+        --template-file main.bicep
     ```
 5. **Monitor the deployment**:
     ```bash
