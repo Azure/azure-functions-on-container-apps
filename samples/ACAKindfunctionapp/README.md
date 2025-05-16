@@ -27,8 +27,9 @@ The provided `main.bicep` template does the following:
 
 ## 3. Deployment
 
-1. **Clone or download** this repository.  
-2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed.  
+1. **Clone or download** this repository. 
+2. 2. Ensure you have the latest [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) and [Bicep CLI](https://learn.microsoft.com/azure/azure-resource-manager/bicep/install) installed.    
+ 
 3. Log in and select your target subscription and resource group:  
     ```bash
     SUBSCRIPTION_ID="<your-subscription-id>"
