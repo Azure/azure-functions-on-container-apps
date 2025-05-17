@@ -59,71 +59,7 @@ ENV SQLDB_Connection="<<connection string>>"
     <TargetFramework>net7.0</TargetFramework>
    ```
 
-4\. Create a C# file called *DurableFunctionsOrchestrationCSharp.cs* and add your Durable Functions orchestration to it: 
-
-```c#
-using System.Net;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
-
-using Microsoft.DurableTask;
-using Microsoft.DurableTask.Client;
-
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
-namespace Company.Function
-{
-    public static class DurableFunctionsOrchestrationCSharp
-    {
-        [Function(nameof(DurableFunctionsOrchestrationCSharp))]
-        public static async Task<List<string>> RunOrchestrator(
-            [OrchestrationTrigger] TaskOrchestrationContext context)
-        {
-            ILogger logger = context.CreateReplaySafeLogger(nameof(DurableFunctionsOrchestrationCSharp));
-            logger.LogInformation("Saying hello.");
-            var outputs = new List<string>();
-
-            // Replace name and input with values relevant for your Durable Functions Activity
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
-
-            // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            return outputs;
-        }
-
-        [Function(nameof(SayHello))]
-        public static string SayHello([ActivityTrigger] string name, FunctionContext executionContext)
-        {
-            ILogger logger = executionContext.GetLogger("SayHello");
-            logger.LogInformation("Saying hello to {name}.", name);
-            return $"Hello {name}!";
-        }
-
-        [Function("DurableFunctionsOrchestrationCSharp_HttpStart")]
-        public static async Task<HttpResponseData> HttpStart(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
-            [DurableClient] DurableTaskClient client,
-            FunctionContext executionContext)
-        {
-            ILogger logger = executionContext.GetLogger("DurableFunctionsOrchestrationCSharp_HttpStart");
-
-            // Function input comes from the request content.
-            string instanceId = await client.ScheduleNewOrchestrationInstanceAsync(
-                nameof(DurableFunctionsOrchestrationCSharp));
-
-            logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
-
-            // Returns an HTTP 202 response with an instance management payload.
-            // See https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-http-api#start-orchestration
-            return client.CreateCheckStatusResponse(req, instanceId);
-        }
-    }
-}
-
-```
+4\. Create a C# file called *DurableFunctionsOrchestrationCSharp.cs* and add your Durable Functions orchestration to it. You can follow this [hello world sample template](https://github.com/Azure/azure-functions-templates/blob/dev/Functions.Templates/Templates/DurableFunctionsOrchestration-CSharp-Isolated/DurableFunctionsOrchestrationCSharp.cs). 
 
 5\. Install the required extensions using standard NuGet package installation methods, such as [`dotnet add package`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-add-package)
 - [Microsoft.Azure.Functions.Worker.Extensions.DurableTask](https://www.nuget.org/packages/Microsoft.Azure.Functions.Worker.Extensions.DurableTask)
@@ -150,21 +86,6 @@ Replace <STORAGE_NAME> with a unique name. Names must contain three to 24 char
 
 You'll also need a publicly accessible SQL Server instance. Follow [instructions](https://learn.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal#create-a-single-database) to create an Azure SQL Database in "MyResourceGroup"
 
-### Update Dockerfile with connection string information
-Update the following environment variables:
-
-```
-ENV AzureWebJobsStorage="<<connection string>>"
-ENV SQLDB_Connection="<<connection string>>"
-```
-
-Obtain your Azure SQL database's connection string by navigating to the database's blade in the Azure portal. Then, under **Settings**, select **Connection strings** and obtain the ADO.NET connection string. Make sure to provide your password in the template provided.
-
-Below is an example of the portal view for obtaining the Azure SQL connection string:
-
-![An Azure connection string as found in the portal](./media/sql_connection_string_portal.png)
-
-Get your Azure Storage account's connection string by navigating to the storage account in the Azure portal. Then, under **Security + networking**, select **Access keys**. 
 
 ### Specify MSSQL as the Durable Functions storage backend in your *host.json*
 
@@ -189,6 +110,17 @@ Get your Azure Storage account's connection string by navigating to the storage 
 }  
 ```
 
+### Get connection strings for later
+You need the connection string of each resource to access the storage account and the SQL server instance. You'll pass the connection strings as environment variables when running the docker image.
+
+Obtain your Azure SQL database's connection string by navigating to the database's blade in the Azure portal. Then, under **Settings**, select **Connection strings** and obtain the ADO.NET connection string. Make sure to provide your password in the template provided.
+
+Below is an example of the portal view for obtaining the Azure SQL connection string:
+
+![An Azure connection string as found in the portal](./media/sql_connection_string_portal.png)
+
+Get your Azure Storage account's connection string by navigating to the storage account in the Azure portal. Then, under **Security + networking**, select **Access keys**. 
+
 ## Build the container image 
 
 > Note: If you have an M1 Mac, follow instructions [here](https://github.com/Azure/azure-functions-core-tools/issues/2901#issuecomment-1597911137) before proceeding. 
@@ -206,9 +138,13 @@ docker build --platform linux --tag <DOCKER_ID>/azuredurablefunctionsimage:v1.0.
 
 In this example, replace \<DOCKER_ID\> with your Docker Hub account ID. When the command completes, you can run the new container locally.
 
-2\. To test the build, run the image in a local container using the [docker run](https://docs.docker.com/engine/reference/commandline/run/) command, with the adding the ports argument, -p 8080:80.
+2\. To test the build, run the image in a local container using the [docker run](https://docs.docker.com/engine/reference/commandline/run/) command, with the ports argument, -p 8080:80 and environment variables `AzureWebJobsStorage` and `SQLDB_Connection`: 
+
 ```sh
-docker run -p 8080:80 -it <DOCKER_ID>/azuredurablefunctionsimage:v1.0.0
+docker run -it <DOCKER_ID>/azuredurablefunctionsimage:v1.0.0 \
+-e AzureWebJobsStorage='Connection string' \
+-e SQLDB_Connection='Connection string' \
+-p 8080:80
 ```
 
 > Note: If you have an M1 mac, remember to use ` --platform linux/amd64`.
@@ -316,6 +252,20 @@ Add the following to the end of the URL:
 In the sample code above, the name of the HTTP trigger is `DurableFunctionsOrchestrationCSharp_HttpStart`. Replace as needed.  
 
 You should see results similar to what you saw previously when testing locally. 
+
+## Scaling 
+Durable Functions running in container apps don't have support for autoscaling today. It's in the roadmap to add this feature. For now, you can manually scale by setting minimum and maximum replica count when creating or modifying your app.
+
+The following Azure CLI command sets the minimum and maximum replica count when creating a new function app in a Container Apps environment from an Azure Container Registry:
+
+```bash
+az functionapp create --name <APP_NAME> --resource-group <MY_RESOURCE_GROUP> --max-replicas 15 --min-replicas 1 --storage-account <STORAGE_NAME> --environment MyContainerappEnvironment --image <LOGIN_SERVER>/azurefunctionsimage:v1 --registry-username <USERNAME> --registry-password <SECURE_PASSWORD> --registry-server <LOGIN_SERVER>
+```
+
+The following sets the same minimum and maximum replica count on an existing function app:
+```bash
+az functionapp config container set --name <APP_NAME> --resource-group <MY_RESOURCE_GROUP> --max-replicas 15 --min-replicas 1
+```
 
 ## Clean up resources
 If you're not going to continue on to the next sample function app, you can remove the Azure resources created during this quickstart with the following command.
