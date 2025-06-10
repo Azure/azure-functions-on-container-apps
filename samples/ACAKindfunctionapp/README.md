@@ -49,7 +49,7 @@ The provided `main.bicep` template does the following:
     ```
 
 1. Deploy the Bicep template using the Azure CLI:
-    > [!WARNING]
+    > **WARNING**
     > This sample uses connection strings to keep the template lightweight. For production scenarios, it's strongly recommended to use [Managed Identity](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=servicebus&pivots=programming-language-python#configure-an-identity-based-connection) for improved security and operational best practices.
 
     > **Note:**  

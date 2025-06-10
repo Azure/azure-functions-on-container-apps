@@ -117,6 +117,9 @@ resource functionsContainerApp 'Microsoft.App/containerApps@2024-10-02-preview' 
         ]
       }
       secrets: [
+        // **WARNING**
+        // This sample uses connection strings to keep the template lightweight. For production scenarios, it's strongly recommended 
+        // to use Managed Identity for improved security and operational best practices.
         {
           name: 'azurewebjobsstorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
