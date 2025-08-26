@@ -1,6 +1,6 @@
 # Prerequisites: Create Azure Functions on Azure Container Apps
 
-This article shows you how to provision the required Azure resources to host Azure Functions on Azure Container Apps.
+This article guides you through setting up the essential Azure resources needed to host Azure Functions on Azure Container Apps. You'll create an Azure Container Apps Environment (which provides the compute infrastructure) and an Azure Storage Account (required for function triggers and logging).
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ This article shows you how to provision the required Azure resources to host Azu
   Replace the placeholder values with your own:
 
   ```bash
-  SUBSCRIPTION_ID="<your-subscription-id>"
+  SUBSCRIPTION_ID="subscription-id"
   RESOURCE_GROUP_NAME="my-aca-functions-group"
   CONTAINER_APP_NAME="my-aca-functions-app"
   ENVIRONMENT_NAME="my-aca-functions-environment"
@@ -123,13 +123,11 @@ az storage account create \
 
 After completing these prerequisites, you're ready to:
 
-- [Deploy your first function app to Azure Container Apps](deploy-function-app.md)
-- [Configure scaling for your function app](configure-scaling.md)
-- [Monitor your function app](monitor-function-app.md)
-
+- [Create an Azure Function Container Image for Azure Container Apps hosting](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md)
+- [Deploy your first function app to Azure Container Apps](./Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v2.md)
 
 ## Related resources
 
-- [Azure Container Apps documentation](https://learn.microsoft.com/azure/container-apps/)
-- [Azure Functions hosting options](https://learn.microsoft.com/azure/azure-functions/functions-scale)
+- [Azure Functions on Azure Container Apps overview](https://learn.microsoft.com/en-us/azure/container-apps/functions-overview)
 - [Workload profiles overview](https://learn.microsoft.com/azure/container-apps/workload-profiles-overview)
+- [Azure Functions hosting options](https://learn.microsoft.com/azure/azure-functions/functions-scale)

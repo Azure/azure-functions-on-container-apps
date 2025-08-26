@@ -27,6 +27,8 @@ For your own images, ensure they are built and pushed to either Docker Hub or Az
 - Docker Hub: `<docker-id>/<image-name>:<tag>`
 - ACR: `<registry-name>.azurecr.io/<image-name>:<tag>`
 
+To create your own Azure Functions container image, refer to our [step-by-step tutorial](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
+
 ## Step 1: Create the function app
 
 Use the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/functionapp#az-functionapp-create) command to create your function app in the Container Apps environment.
@@ -35,9 +37,9 @@ Use the [az functionapp create](https://learn.microsoft.com/en-us/cli/azure/func
 
 ```bash
 az functionapp create \
-  --resource-group MyResourceGroup \
-  --name <functionapp-name> \
-  --environment MyContainerappEnvironment \
+  --resource-group $RESOURCE_GROUP_NAME \
+  --name $CONTAINER_APP_NAME \
+  --environment $ENVIRONMENT_NAME \
   --storage-account <storage-name> \
   --functions-version 4 \
   --runtime dotnet-isolated \
@@ -51,9 +53,9 @@ az functionapp create \
 
 ```bash
 az functionapp create \
-  --resource-group MyResourceGroup \
-  --name <functionapp-name> \
-  --environment MyContainerappEnvironment \
+  --resource-group $RESOURCE_GROUP_NAME \
+  --name $CONTAINER_APP_NAME \
+  --environment $ENVIRONMENT_NAME \
   --storage-account <storage-name> \
   --functions-version 4 \
   --runtime dotnet-isolated \
@@ -69,7 +71,7 @@ az functionapp create \
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `<functionapp-name>` | Globally unique name for your function app | `myfuncapp123` |
+| `$CONTAINER_APP_NAME` | Globally unique name for your function app | `myfuncapp123` |
 | `<storage-name>` | Name of your storage account (from prerequisites) | `mystorageaccount` |
 | `<workload-profile-name>` | Use `"Consumption"` for consumption plan or your dedicated profile name | `"Consumption"` |
 | `<vcpus>` | Number of vCPUs (see resource limits below) | `1` |
@@ -94,7 +96,7 @@ Configure the storage account connection string for your function app:
 1. Get the storage account connection string:
    ```bash
    az storage account show-connection-string \
-     --resource-group <resource-group> \
+     --resource-group $RESOURCE_GROUP_NAME \
      --name <storage-name> \
      --query connectionString \
      --output tsv
@@ -103,8 +105,8 @@ Configure the storage account connection string for your function app:
 2. Set the connection string as an app setting:
    ```bash
    az functionapp config appsettings set \
-     --name <functionapp-name> \
-     --resource-group <resource-group> \
+     --name $CONTAINER_APP_NAME \
+     --resource-group $RESOURCE_GROUP_NAME \
      --settings AzureWebJobsStorage="<connection-string>"
    ```
 
@@ -115,8 +117,8 @@ For HTTP-triggered functions:
 1. Get the function URL:
    ```bash
    az functionapp function show \
-     --resource-group <resource-group> \
-     --name <functionapp-name> \
+     --resource-group $RESOURCE_GROUP_NAME \
+     --name $CONTAINER_APP_NAME \
      --function-name <function-name> \
      --query "invokeUrlTemplate" \
      --output tsv
@@ -135,8 +137,8 @@ To deploy a new version of your container image:
 
 ```bash
 az functionapp config container set \
-  --name <functionapp-name> \
-  --resource-group <resource-group> \
+  --name $CONTAINER_APP_NAME \
+  --resource-group $RESOURCE_GROUP_NAME \
   --image <registry>/<image-name>:<new-version> \
   --registry-username <username> \
   --registry-password <password>
@@ -148,8 +150,8 @@ To switch to a different workload profile:
 
 ```bash
 az functionapp config container set \
-  --name <functionapp-name> \
-  --resource-group <resource-group> \
+  --name $CONTAINER_APP_NAME \
+  --resource-group $RESOURCE_GROUP_NAME \
   --workload-profile-name <new-profile-name> \
   --cpu <vcpus> \
   --memory <memory>
@@ -161,30 +163,11 @@ To avoid cold starts and configure scaling:
 
 ```bash
 az functionapp config container set \
-  --name <functionapp-name> \
-  --resource-group <resource-group> \
+  --name $CONTAINER_APP_NAME \
+  --resource-group $RESOURCE_GROUP_NAME \
   --min-replicas <min-replicas> \
   --max-replicas <max-replicas>
 ```
-
-## Managed features
-
-### Managed resource groups
-
-Azure Functions on Container Apps uses managed resource groups to protect your app resources. These groups:
-- Are created automatically when you deploy your first function app
-- Prevent unauthorized modifications or deletions
-- Are removed automatically when all function apps are deleted from the environment
-
-### Managed Identity
-
-Azure Functions on Container Apps supports both system-assigned and user-assigned managed identities for:
-- Accessing Azure Key Vault
-- Pulling images from Azure Container Registry
-- Authenticating with storage accounts
-- Connecting to other Azure services
-
-Learn more about [Managed identities for Azure resources](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) and see [sample implementations](https://github.com/Azure/azure-functions-on-container-apps/tree/main/samples/Biceptemplates/MI_VNET_sample).
 
 ## Clean up resources
 
@@ -194,7 +177,7 @@ To remove all resources created in this tutorial:
 > This command deletes the entire resource group and all resources within it.
 
 ```bash
-az group delete --name <resource-group>
+az group delete --name $RESOURCE_GROUP_NAME
 ```
 
 ## Troubleshooting

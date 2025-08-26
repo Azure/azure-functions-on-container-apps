@@ -1,57 +1,87 @@
-## Troubleshooting Guide
+# Troubleshooting Guide
 
+## Known Issues and Limitations
 
-> ##  1) User assigned Managed Identity  is only supported while deploying Azure Functions on Azure Container Apps using Microsoft.App RP and kind=functionapp. 
-Note : System assigned Managed Identity  will be enabled in April 2025
-While configuring user assigned Managed identity use <CONNECTION_NAME_PREFIX>__managedIdentityResourceId , <CONNECTION_NAME_PREFIX>__clientId support will be added soon by May 2025
+### 1. Managed Identity Support
+- **User Assigned Managed Identity**: Currently supported when deploying Azure Functions on Azure Container Apps using `Microsoft.App` RP with `kind=functionapp`
+  - When configuring, use: `<CONNECTION_NAME_PREFIX>__managedIdentityResourceId`
+  - `<CONNECTION_NAME_PREFIX>__clientId` support coming May 2025
+- **System Assigned Managed Identity**: Available April 2025
 
-> ##  2) Cosmos dB scaling feature with connection string will be enabled in April 2025 and Managed Identity based scaling will estimated to be out by May 2025
+### 2. Cosmos DB Scaling
+- **Connection String-based Scaling**: Available April 2025
+- **Managed Identity-based Scaling**: Estimated May 2025
 
-> ##  3) Azure Container Apps's Az Portal way of creating and deploying Azure Functions on Azure Container Apps will be released in April 2025. But you can still view the resource overview blades.
-Please note do not modify min/max replicas or environment variables from AzPortal or any operation that will result in a new revision creation. As there is a temporary issue that gets created on auto-scaling feature as a result of this.
+### 3. Azure Portal Deployment
+- **Portal Deployment**: Full support coming April 2025
+- **Current Capabilities**: Resource overview blades are available
+- **⚠️ Important**: Do NOT modify the following from Azure Portal:
+  - Min/Max replicas
+  - Environment variables
+  - Any operation creating a new revision
+  
+  *These modifications cause temporary auto-scaling issues*
 
-> ##  4)  Please do not change/update  the WEBSITE_AUTH_ENCRYPTION_KEY 
+### 4. Security Configuration
+**Do NOT change or update** the `WEBSITE_AUTH_ENCRYPTION_KEY` setting
 
+### 5. Scaling Issues After Updates
+If scaling doesn't work correctly after updating a function app, manually trigger synchronization:
 
-> ##  5) Post update of functionapp if scaling is not happening correctly, then manually synctrigger the functionapp. 
+**Method A**: Use REST API
+- [Web Apps - Sync Function Triggers](https://docs.microsoft.com/rest/api/appservice/webapps/syncfunctiontriggers)
 
-SyncTrigger can be done manually by either of these methods :   
+**Method B**: Direct HTTP Request
+1. Get `defaultHostName` via [Sites - Get Site REST API](https://docs.microsoft.com/rest/api/appservice/sites/get)
+2. Send POST request to: `https://<defaultHostName>/admin/host/synctriggers?code=<API_KEY>`
+3. Use the master key (found in: StorageAccount > Containers > azure-webjobs-secrets > FunctionappName)
 
-a) Web Apps - Sync Function Triggers - REST API (Azure App Service) | Microsoft Learn 
-b)  Get 'defaultHostName' by doing a call on Sites - Get Site - REST API (Azure Azure Migrate) | Microsoft Learn 
-Send an HTTP POST request to https://<defaultHostName>/admin/host/synctriggers?code=<API_KEY> using the master key (Azure Functions HTTP trigger | Microsoft Learn). 
-(You can also fetch the master key from StorageAccount>Containers>azure-webjobs-secrets>FunctionappName.) 
+### 6. Extension Conflicts
+**Issue**: `az functionapp create` fails with error: `unrecognized arguments: --environment –image –registry-username –registry-password`
 
+**Solution**: Uninstall the `appservice-kube` extension if already installed
 
->  6) If you already have a appservice-kube extension installed then az functionapp create fails - unrecognized arguments: --environment –image –registry-username –registry-password
- 
- In this case you need to uninstall the appservice-kube extension 
+### 7. ManagedEnvironment Creation
+If first-time creation fails for new ManagedEnvironment, retry the operation
 
-> 7) If for new ManagedEnvironment you see a failure for the first time create, please retry. 
+### 8. Storage Account Requirement
+**Do NOT remove** the storage account from the function app's appSettings
 
-> 8) Please do not remove the storage account from the appSettings of functionapp. 
+### 9. .NET Isolated Runtime
+Use `FUNCTIONS_WORKER_RUNTIME="dotnet-isolated"` for .NET isolated-based images
 
-> 9) Use FUNCTIONS_WOKER_RUNTIME="dotnet-isolated" for dotnet isolated based images.  
+### 10. .NET SDK Issues
+If encountering "latest .NET SDK not found" errors, run:
+```bash
+dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.7.0
+```
 
-> 10) Incase you run into latest .net sdk not found issues run below command 
+## Microsoft.Web Resource Provider Specific Issues
 
-  dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.7.0 
+### Access Denied Error
+**Error Message**: 
+```
+The access is denied because of the deny assignment with name '605xxxxxxxxxxxxxx' and Id '605xxxxxxxx' at scope '/subscriptions/xxxxxxxxxxx/resourceGroups/mrgname'
+```
 
-## Below is applicable while deploying Azure Functions using Microsoft.Web resource provider
->1) In case you see below error and trying to access underlying Azure Container Apps resource
-_The access is denied because of the deny assignment with name '605xxxxxxxxxxxxxx' and Id '605xxxxxxxx' at scope '/subscriptions/xxxxxxxxxxx/resourceGroups/mrgname '._
+**Solution**: Do not attempt to delete or modify the underlying Azure Container Apps resource. This resource is locked to prevent users, groups, or service principals from making changes that could cause the function app to enter an inconsistent state.
 
-## Solution
-Users are recommended not to delete/modify the underlying azure container apps resource. As this resource is locked down and will not allow user, group, or service principal to modify/update or deletes. 
-This is to protect the function app resource from getting into an inconsistent state.
+## Docker Registry Configuration
 
->10) If you are facing issues with naming convention while using private docker registry. Please follow below guidance
-Provide --image with registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> . For more details refer to this [github discussion](https://github.com/Azure/azure-functions-on-container-apps/issues/66)
+### Private Docker Registry Naming Convention
+When using private Docker registries, follow this format:
 
-az functionapp config container set `
-  --name <FUNCTION APP NAME> `
-  --resource-group <RESOURCE GROUP> `
-  --image registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> `
-  --registry-server registry.hub.docker.com `
-  --registry-username <DOCKER ID> `
+**Command Example**:
+```bash
+az functionapp config container set \
+  --name <FUNCTION APP NAME> \
+  --resource-group <RESOURCE GROUP> \
+  --image registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME> \
+  --registry-server registry.hub.docker.com \
+  --registry-username <DOCKER ID> \
   --registry-password <PASSWORD>
+```
+
+**Note**: Always use the full registry URL format: `registry.hub.docker.com/<DOCKER ID>/<IMAGE NAME>`
+
+For more details, see this [GitHub discussion](https://github.com/Azure/azure-functions-on-container-apps/issues/66)

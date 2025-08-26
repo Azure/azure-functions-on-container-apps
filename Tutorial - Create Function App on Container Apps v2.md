@@ -7,22 +7,26 @@ Learn how to deploy and manage Azure Functions on Azure Container Apps. This tut
 ## Prerequisites
 
 Before you begin, ensure you have:
-- Azure Container Apps Environment configured
+- Environment variables are setup with replacing placeholders
+- Azure Container Apps Environment provisioned
 - Azure Storage Account provisioned
 
 For detailed setup instructions, see [Prerequisite - Create Function App on Container Apps](./Prerequisite%20-%20Create%20Function%20App%20on%20Container%20Apps%20.md).
 
+
 ## Deploy your Function App
 
-You can deploy using either a pre-built demo image or your own container image.
+You can deploy using either a pre-built demo image or your own container image. 
+
+To create your own Azure Functions container image, refer to our [step-by-step tutorial](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
 
 ### Option 1: Quick Start with Demo Image
 
 Deploy a sample HTTP trigger function using Microsoft's demo image:
 
-```sh
-az containerapp create --resource-group MyResourceGroup \
-    --name $FUNCTIONS_CONTAINER_APP_NAME \
+```bash
+az containerapp create --resource-group $RESOURCE_GROUP_NAME \
+    --name $CONTAINER_APP_NAME \
     --environment $ENVIRONMENT_NAME \
     --image mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0 \
     --ingress external \
@@ -35,19 +39,19 @@ az containerapp create --resource-group MyResourceGroup \
 
 Use your own Docker Hub image:
 
-```sh
-az containerapp create --resource-group MyResourceGroup \
-    --name <function_containerapp_name> \
-    --environment MyContainerappEnvironment \
+```bash
+az containerapp create --resource-group $RESOURCE_GROUP_NAME \
+    --name $CONTAINER_APP_NAME \
+    --environment $ENVIRONMENT_NAME \
     --image <DOCKER_ID>/<image_name>:<version> \
-    --workload-profile-name <WORKLOAD_PROFILE_NAME> \
+    --workload-profile-name Consumption \
     --cpu <vcpus> \
     --memory <memory> \
     --ingress external \
     --target-port 80 \
     --kind functionapp \
     --env-vars AzureWebJobsStorage=<your-storage-connection-string> \
-                        APPLICATIONINSIGHTS_CONNECTION_STRING=<your-application-insights-connection-string> \
+               APPLICATIONINSIGHTS_CONNECTION_STRING=<your-application-insights-connection-string> \
     --query properties.outputs.fqdn
 ```
 
@@ -55,14 +59,14 @@ az containerapp create --resource-group MyResourceGroup \
 
 Deploy using an image from ACR:
 
-```sh
-az containerapp create --resource-group MyResourceGroup \
-    --name <function_containerapp_name> \
-    --environment MyContainerappEnvironment \
+```bash
+az containerapp create --resource-group $RESOURCE_GROUP_NAME \
+    --name $CONTAINER_APP_NAME \
+    --environment $ENVIRONMENT_NAME \
     --image <acr-login-server>/<image_name>:<version> \
     --registry-username <user_name> \
     --registry-password <user_password> \
-    --workload-profile-name <WORKLOAD_PROFILE_NAME> \
+    --workload-profile-name <my-dedicated-workload-profile-name> \
     --cpu <vcpus> \
     --memory <memory> \
     --ingress external \
@@ -93,9 +97,9 @@ Choose between Consumption or Dedicated workload profiles based on your requirem
 
 ### Step 1: Retrieve Storage Connection String
 
-```sh
+```bash
 az storage account show-connection-string \
-    --resource-group <Resource_group> \
+    --resource-group $RESOURCE_GROUP_NAME \
     --name <STORAGE_NAME> \
     --query connectionString \
     --output tsv
@@ -103,14 +107,15 @@ az storage account show-connection-string \
 
 ### Step 2: Update Application Settings
 
-```sh
+```bash
 az containerapp update \
-    --name <your-containerapp-name> \
-    --resource-group <your-resource-group> \
+    --name $CONTAINER_APP_NAME  \
+    --resource-group $RESOURCE_GROUP_NAME \
     --set-env-vars \
-    AzureWebJobsStorage=<your-storage-connection-string> \
-    APPLICATIONINSIGHTS_CONNECTION_STRING=<your-application-insights-connection-string>
+    AzureWebJobsStorage=<your-storage-connection-string>
 ```
+
+Optionally set env variable `APPLICATIONINSIGHTS_CONNECTION_STRING` too if you want to integrate with Azure App Insights.
 
 > **Tip:** For secrets in ACR, prefix values with `secretref:` followed by the secret name.
 
@@ -118,10 +123,10 @@ az containerapp update \
 
 ### Get the Function URL
 
-```sh
+```bash
 az containerapp show \
-    --name <your-containerapp-name> \
-    --resource-group <your-resource-group> \
+    --name $CONTAINER_APP_NAME \
+    --resource-group $RESOURCE_GROUP_NAME \
     --query properties.configuration.ingress.fqdn \
     --output tsv
 ```
@@ -131,9 +136,15 @@ az containerapp show \
 1. Copy the URL from the command output
 2. Open in a web browser
 3. Append `/api/HttpExample` to the URL
-4. You should see: "HTTP trigger function processed a request"
+4. You should see: "HTTP trigger function processed a request" with HTTP 200 OK response code.
 
-**Example URL:** `http://myfuncapponaca.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/HttpExample`
+**Example URL:** `http://my-aca-functions-app.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/HttpExample`
+
+Bash command to validate endpoint is working or not
+
+```bash
+curl http://my-aca-functions-app.gray-a2b3ceef.northeurope.azurecontainerapps.io/api/HttpExample -v
+```
 
 ## Update Your Function
 
@@ -141,10 +152,10 @@ az containerapp show \
 
 Deploy a new version of your function:
 
-```sh
+```bash
 az containerapp update \
-    --name <my-funccontainerapp> \
-    --resource-group <MyResourceGroup> \
+    --name $CONTAINER_APP_NAME \
+    --resource-group $RESOURCE_GROUP_NAME \
     --image <myregistry.azurecr.io/my-funcapp:v2.0> \
     --registry-password <Password> \
     --registry-username <DockerUserId>
@@ -154,10 +165,10 @@ az containerapp update \
 
 Change the workload profile configuration:
 
-```sh
+```bash
 az containerapp update \
-    --name <my-funccontainerapp> \
-    --resource-group <MyResourceGroup> \
+    --name $CONTAINER_APP_NAME \
+    --resource-group $RESOURCE_GROUP_NAME \
     --workload-profile-name <workload-profile-name> \
     --cpu <vcpus> \
     --memory <memory>
@@ -167,10 +178,10 @@ az containerapp update \
 
 Adjust replica settings to optimize performance:
 
-```sh
+```bash
 az containerapp update \
-    --name <my-funccontainerapp> \
-    --resource-group <MyResourceGroup> \
+    --name $CONTAINER_APP_NAME \
+    --resource-group $RESOURCE_GROUP_NAME \
     --cpu 0.5 \
     --memory 1.0Gi \
     --min-replicas 4 \
@@ -194,12 +205,15 @@ Learn more:
 
 Remove all resources created in this tutorial:
 
-```sh
+```bash
 az group delete --name $RESOURCE_GROUP
 ```
 
 > **Warning:** This command deletes the entire resource group and all resources within it. Ensure you don't have other important resources in this group before deletion.
 
 ## Need Help?
+
+> **Note**: If you encounter any issues with the steps in this tutorial, refer to the [official Azure Functions on container App documentation](https://learn.microsoft.com/en-us/azure/container-apps/functions-usage) for the most up-to-date information, as the public documentation is updated more frequently.
+
 
 If you encounter issues, [open an issue on GitHub](https://github.com/Azure/azure-functions-on-container-apps/issues).
