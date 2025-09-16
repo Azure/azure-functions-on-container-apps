@@ -11,16 +11,16 @@ Before you begin, ensure you have:
 - Azure Container Apps Environment provisioned
 - Azure Storage Account provisioned
 
-For detailed setup instructions, see [Prerequisite - Create Function App on Container Apps](./Prerequisite%20-%20Create%20Function%20App%20on%20Container%20Apps%20.md).
+For detailed setup instructions, see [Prerequisite - Create Function App on Container Apps](../common/Prerequisite%20-%20Create%20Function%20App%20on%20Container%20Apps%20.md).
 
 
 ## Deploy your Function App
 
 You can deploy using either a pre-built demo image or your own container image. 
 
-To create your own Azure Functions container image, refer to our [step-by-step tutorial](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
+To create your own Azure Functions container image, refer to our [step-by-step tutorial](../common/Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
 
-### Option 1: Quick Start with Demo Image
+### Option 1: Quick Start with Demo Image (Recommended)
 
 Deploy a sample HTTP trigger function using Microsoft's demo image:
 
@@ -215,5 +215,4 @@ az group delete --name $RESOURCE_GROUP
 
 > **Note**: If you encounter any issues with the steps in this tutorial, refer to the [official Azure Functions on container App documentation](https://learn.microsoft.com/en-us/azure/container-apps/functions-usage) for the most up-to-date information, as the public documentation is updated more frequently.
 
-
-If you encounter issues, [open an issue on GitHub](https://github.com/Azure/azure-functions-on-container-apps/issues).
+Submit an issue or feature request to the [Azure Container Apps GitHub repository](https://github.com/microsoft/azure-container-apps/issues). Add the `functions on aca` label to help expedite issue triage.

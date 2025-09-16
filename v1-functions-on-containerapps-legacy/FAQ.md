@@ -1,17 +1,17 @@
 # Frequently Asked Questions - Azure Functions on Azure Container Apps (v1)
 
-> [!IMPORTANT]
-> If you're creating a new function app for the first time, we recommend using the [Azure Functions on Azure Container Apps v2 (kind=functionapp)](./azure-functions-on-container-apps-v2.md) hosting option instead of this v1 approach.
+> **📢 Important: Native Azure Functions Support Now Available**
+> 
+> Azure Functions now offers **native integration** with Azure Container Apps (see [announcement](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-native-azure-functions-support-in-azure-container-apps/4414039)). This is the **recommended hosting method** for most new workloads, combining the full capabilities of Azure Container Apps with the simplicity of the Functions programming model and auto-scaling.
+>
 
 
 ## 1. Which plans are currently supported?
 
 Azure Functions on Container Apps currently supports the following pricing plans:
 
-- **[Consumption v1 (GA)](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Pay-per-use model
+- **[Consumption v1](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Pay-per-use model
 - **[Workload Profile Default Consumption](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Standard consumption tier
-
-**Note:** Custom workload profiles with dedicated plans are not yet supported but will be available soon.
 
 ## 2. When should I use Azure Functions on Azure Container Apps?
 
@@ -47,30 +47,20 @@ The following configurations can be updated after creating your Functions contai
 - `--registry-username` - Registry authentication username
 - `--min-replicas` - Minimum number of replicas
 - `--max-replicas` - Maximum number of replicas
+- By default, a containerized function app monitors port 80 for incoming requests. If your app must use a different port, use the [WEBSITES_PORT application setting](https://learn.microsoft.com/en-us/azure/app-service/reference-app-settings#custom-containers) to change this default port.
 
-## 5. Which regions are supported?
+## 5. Which triggers and bindings are supported?
 
-During public preview, Azure Functions on Container Apps is available in:
+### Fully Supported (with auto-scaling):
+Refer [documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings?tabs=isolated-process%2Cnode-v4%2Cpython-v2&pivots=programming-language-csharp#supported-bindings) for the latest information.
 
-1. South Central US
-2. UK South
-3. West Europe
-4. East US
-5. Australia East
-6. East US 2
-7. North Europe
-8. West US 3
-9. Central US
+### Partially Supported (without auto-scaling):
+All other [Azure Functions triggers and bindings](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings?tabs=csharp#supported-bindings) work but require manual configuration of minimum replicas.
 
 ## 6. How do I configure scaling rules?
 
 ### Automatic Scaling
-The platform automatically configures KEDA-based scaling for these triggers:
-- HTTP
-- Azure Storage Queue
-- Azure Service Bus
-- Azure EventHub
-- Kafka Trigger
+The platform automatically configures KEDA-based scaling for many triggers. Refer [documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-container-apps-hosting#event-driven-scaling)
 
 ### Manual Configuration
 For unsupported triggers, configure replica counts manually:
@@ -90,29 +80,16 @@ az functionapp config container set --name <func_name> [--max-replicas <value>] 
 Currently, only [Container App environment policies](https://learn.microsoft.com/en-us/azure/container-apps/policy-reference#policy-definitions) apply to Functions container apps, such as:
 - [Container App environments should use network injection](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F8b346db6-85af-419b-8557-92cee2c0f9bb)
 
-**Note:** Container App-level policy enforcement for Azure Functions will be available soon.
-
-## 8. Which triggers and bindings are supported?
-
-### Fully Supported (with auto-scaling):
-- HTTP
-- Azure Storage Queue
-- Azure Service Bus
-- Azure EventHub
-- Kafka Trigger (without certificates)
-
-### Partially Supported (without auto-scaling):
-All other [Azure Functions triggers and bindings](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings?tabs=csharp#supported-bindings) work but require manual configuration of minimum replicas.
-
-## 9. How can I monitor my Functions app?
+## 8. How can I monitor my Functions app?
 
 Application Insights is fully supported for monitoring and logging your Azure Functions on Container Apps.
+Additionally we have a solid [Observability in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/observability) and tooling around it.
 
-## 10. How is billing calculated?
+## 9. How is billing calculated?
 
 Azure Functions on Container Apps follows the standard [Azure Container Apps pricing](https://azure.microsoft.com/en-us/pricing/details/container-apps/) model with no additional charges for Functions.
 
-## 11. Which deployment tools are supported?
+## 10. Which deployment tools are supported?
 
 Deploy Functions on Container Apps using:
 - Azure CLI
@@ -123,12 +100,7 @@ Deploy Functions on Container Apps using:
 - Azure Functions Core Tools
 - Bicep Templates
 
-## 12. What are the version requirements?
-
-- **Functions Host:** Version 4.17 or later
-- **Extension Bundles:** Versions compatible with Functions host v4.17+
-
-## 13. How do I retrieve HTTP trigger URLs?
+## 11. How do I retrieve HTTP trigger URLs?
 
 ### Using Azure Portal:
 1. Navigate to your Functions app

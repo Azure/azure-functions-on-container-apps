@@ -13,7 +13,7 @@ Before you begin, ensure you have:
 
 - An Azure subscription. If you don't have one, create a [free account](https://azure.microsoft.com/free/)
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) version 2.32.0 or later
-- A Container Apps Environment and Storage Account configured. See [Prerequisites: Create Function App on Container Apps](./Prerequisite%20-%20Create%20Function%20App%20on%20Container%20Apps%20.md)
+- A Container Apps Environment and Storage Account configured. See [Prerequisites: Create Function App on Container Apps](../common/Prerequisite%20-%20Create%20Function%20App%20on%20Container%20Apps%20.md)
 - A Docker image containing your function app (or use our quick start sample)
 
 ## Quick start with sample image
@@ -27,7 +27,7 @@ For your own images, ensure they are built and pushed to either Docker Hub or Az
 - Docker Hub: `<docker-id>/<image-name>:<tag>`
 - ACR: `<registry-name>.azurecr.io/<image-name>:<tag>`
 
-To create your own Azure Functions container image, refer to our [step-by-step tutorial](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
+To create your own Azure Functions container image, refer to our [step-by-step tutorial](../common/Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md) that walks you through building and containerizing your function app.
 
 ## Step 1: Create the function app
 
@@ -142,19 +142,6 @@ az functionapp config container set \
   --image <registry>/<image-name>:<new-version> \
   --registry-username <username> \
   --registry-password <password>
-```
-
-### Change workload profile
-
-To switch to a different workload profile:
-
-```bash
-az functionapp config container set \
-  --name $CONTAINER_APP_NAME \
-  --resource-group $RESOURCE_GROUP_NAME \
-  --workload-profile-name <new-profile-name> \
-  --cpu <vcpus> \
-  --memory <memory>
 ```
 
 ### Configure scaling

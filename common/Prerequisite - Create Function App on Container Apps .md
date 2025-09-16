@@ -1,4 +1,4 @@
-# Prerequisites: Create Azure Functions on Azure Container Apps
+# Prerequisites Steps: Create Azure Functions on Azure Container Apps
 
 This article guides you through setting up the essential Azure resources needed to host Azure Functions on Azure Container Apps. You'll create an Azure Container Apps Environment (which provides the compute infrastructure) and an Azure Storage Account (required for function triggers and logging).
 
@@ -60,7 +60,9 @@ Workload profiles determine the compute and memory resources available to your c
 - **Consumption profile**: Serverless apps with scale-to-zero support. Pay only for resources your apps use.
 - **Dedicated profile**: Customized hardware with predictable costs. Fixed pricing for the entire environment.
 
-### Option 1: Create environment with Consumption workload profile (Recommended)
+Choose right [workload profile type](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview#profile-types) as per your needs.
+
+### Create environment with Consumption workload profile
 
 The Consumption profile is the default profile and ideal for most scenarios:
 
@@ -84,7 +86,12 @@ az containerapp env show \
 
 Wait until `provisioningState` shows **Succeeded** before proceeding.
 
-### Option 2: Add a Dedicated workload profile (GPU support)
+### Optional: Add a Dedicated workload profile with GPU support
+
+> **Important**: 
+> - Creating a Dedicated workload profile requires quota approval for your Azure subscription
+> - Dedicated profiles incur fixed costs regardless of usage, as you're reserving dedicated hardware
+> - GPU-enabled profiles are significantly more expensive than standard profiles
 
 If you need customized hardware or GPU support, add a Dedicated profile to your existing environment:
 
@@ -92,7 +99,7 @@ If you need customized hardware or GPU support, add a Dedicated profile to your 
 az containerapp env workload-profile add \
   --resource-group $RESOURCE_GROUP_NAME \
   --name $ENVIRONMENT_NAME \
-  --workload-profile-type "Dedicated" \
+  --workload-profile-type "NC24-A100" \
   --workload-profile-name $WORKLOAD_PROFILE_NAME \
   --min-nodes 1 \
   --max-nodes 3

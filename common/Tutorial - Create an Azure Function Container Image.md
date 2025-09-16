@@ -4,6 +4,9 @@
 This tutorial shows you how to create and test a containerized Azure Function that can be deployed to Azure Container Apps. You'll build a working container image locally and verify it functions correctly before creating Azure resources.
 
 > **Note**: If you encounter any issues with the steps in this tutorial, refer to the [official Azure Functions container documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-container-registry) for the most up-to-date information, as the public documentation is updated more frequently.
+>
+
+Another [helpful documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-how-to-custom-container?pivots=container-apps) 
 
 ## In this tutorial
 

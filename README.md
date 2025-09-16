@@ -5,7 +5,7 @@
 > Azure Functions now offers **native integration** with Azure Container Apps (see [announcement](https://techcommunity.microsoft.com/blog/appsonazureblog/announcing-native-azure-functions-support-in-azure-container-apps/4414039)). This is the **recommended hosting method** for most new workloads, combining the full capabilities of Azure Container Apps with the simplicity of the Functions programming model and auto-scaling.
 >
 > 📚 **Learn more:** [Native Azure Functions Support in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/functions-overview)  
-> 🔧 **Sample template:** [main.bicep](/samples/ACAKindfunctionapp/main.bicep)
+> 🔧 **Sample template:** [main.bicep](./samples/ACAKindfunctionapp/main.bicep)
 
 ## Overview
 
@@ -45,7 +45,7 @@ Built-in integration with enterprise-grade technologies:
 
 ### 📊 Dynamic Scaling
 - Scale to zero during idle periods
-- Scale to dozens of containers under high load
+- Scale to 1000s of containers under high load
 - Event-based scaling with platform-managed triggers
 
 ## Common Use Cases
@@ -58,42 +58,17 @@ Built-in integration with enterprise-grade technologies:
 | **Mixed Microservices** | Seamlessly integrate different application types in a single environment |
 | **IoT & Edge Computing** | Process events from IoT devices, point-of-sale systems, and edge locations |
 
-## Supported Triggers and Bindings
+## Azure Functions on Container App v1 vs v2 Hosting options
 
-The following triggers support platform-managed scaling:
+| Version | Type | Description | Recommendation | Additional Information |
+|---------|------|-------------|----------------|------------------------|
+| **V2** | `kind=functionapp` | Native integration with full Container Apps features.<br>• Direct Container Apps resource creation<br>• Full access to all Container Apps capabilities<br>• No separate Azure Functions resource needed | ✅ **Recommended for new workloads** | [Learn more about V2](./v2-functions-on-containerapps-kind=functionapp/README.md) |
+| **V1** | Legacy | Original hosting model.<br>• Creates Azure Functions resource<br>• Provisions Container Apps resources in read-only platform-managed resource group<br>• Limited Container Apps feature access | ⚠️ Supported but not recommended for new projects | [Learn more about V1](./v1-functions-on-containerapps-legacy/README.md) |
 
-✅ **Fully Supported:**
-- HTTP
-- Timer
-- Azure Event Grid
-- Azure Event Hubs
-- Azure Blob Storage (event-based)
-- Azure Queue Storage
-- Azure Service Bus
-- Kafka
-- Durable Functions (MSSQL storage provider)
+### Key Differences
 
-
-### Current Limitations
-
-#### Kafka Triggers
-- SSL protocol not supported on Container Apps
-- For Event Hubs connections, `username` must resolve to an application setting for dynamic scaling
-
-#### Managed Identities
-Supported for:
-- Azure Container Registry deployments
-- Azure Event Hubs, Queue Storage, and Service Bus triggers/bindings
-- Required host storage connections
-
-Not yet supported for:
-- Durable Functions MSSQL storage provider (coming soon)
-
-#### Other Considerations
-- No direct Kubernetes API access
-- Cannot move deployments between resource groups or subscriptions
-- Azure CLI `containerapp` extension conflicts with `appservice-kube` extension
-- Azure Blob Storage and Event Grid don't require Managed Identity configuration
+- **V2 (Native Integration)**: You create Container Apps directly with `kind=functionapp`, providing full control and access to all Container Apps features without requiring a separate Azure Functions resource.
+- **V1 (Legacy)**: Creates an Azure Functions resource that additionally provisions Container Apps resources under a read-only, platform-managed resource group with limited feature access.
 
 ## Regional Availability
 
@@ -102,28 +77,21 @@ Azure Functions on Container Apps is available in all [Container Apps supported 
 ### Pricing Plans
 - **Consumption plan**: Pay-per-use model
 - **Dedicated plan**: Reserved compute capacity
-- **Consumption + Dedicated**: Hybrid model ([supported regions](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview#supported-regions))
+
+Choose right [workload profile type](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview#profile-types) as per your needs.
 
 Learn more: [Azure Container Apps pricing](https://azure.microsoft.com/pricing/details/container-apps/)
 
-## Azure Functions on Container App V1 vs V2 Hosting options
-
-| Version | Type | Description | Recommendation |
-|---------|------|-------------|----------------|
-| **V2** | `kind=functionapp` | Native integration with full Container Apps features | ✅ **Recommended for new workloads** |
-| **V1** | Legacy | Original hosting model | ⚠️ Supported but not recommended for new projects |
-
 ## Getting Started
 
-### 📖 Tutorials
-- [Create Azure Functions on Container Apps V2 (kind=functionapp)](./Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v2.md) - **Recommended**
-- [Create Azure Functions on Container Apps V1](./Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v1.md)
+### Tutorials
+- [Create Azure Functions on Container Apps V2 (kind=functionapp)](./v2-functions-on-containerapps-kind=functionapp/Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v2.md) - ✅ **Recommended**
+- [Create Azure Functions on Container Apps V1](./v1-functions-on-containerapps-legacy/Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v1.md) ⚠️
 
-### 🔧 Resources
-- [Troubleshooting Guide](./Troubleshooting%20Guide.md)
-- [Frequently Asked Questions](./FAQ.md)
+# Feedback
+Submit an issue or feature request to the [Azure Container Apps GitHub repository](https://github.com/microsoft/azure-container-apps/issues). Add the `functions on aca` label to help expedite issue triage.
 
-## Contributing
+### Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -131,6 +99,6 @@ When you submit a pull request, a CLA bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## Trademarks
+### Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.
