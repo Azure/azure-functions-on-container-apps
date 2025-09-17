@@ -11,7 +11,7 @@
 Azure Functions on Container Apps currently supports the following pricing plans:
 
 - **[Consumption v1](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Pay-per-use model
-- **[Workload Profile Default Consumption](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Standard consumption tier
+- **[Workload Profile](https://azure.microsoft.com/en-in/pricing/details/container-apps/)** - Both consumption & dedicated tier
 
 ## 2. When should I use Azure Functions on Azure Container Apps?
 
@@ -91,14 +91,7 @@ Azure Functions on Container Apps follows the standard [Azure Container Apps pri
 
 ## 10. Which deployment tools are supported?
 
-Deploy Functions on Container Apps using:
-- Azure CLI
-- Azure Portal
-- GitHub Actions
-- Azure Pipeline Tasks
-- ARM Templates
-- Azure Functions Core Tools
-- Bicep Templates
+Refer [documentation](https://learn.microsoft.com/en-us/azure/azure-functions/functions-container-apps-hosting#deployment-options) for latest information.
 
 ## 11. How do I retrieve HTTP trigger URLs?
 

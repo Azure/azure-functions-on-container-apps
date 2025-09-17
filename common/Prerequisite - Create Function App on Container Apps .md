@@ -131,7 +131,7 @@ az storage account create \
 After completing these prerequisites, you're ready to:
 
 - [Create an Azure Function Container Image for Azure Container Apps hosting](./Tutorial%20-%20Create%20an%20Azure%20Function%20Container%20Image.md)
-- [Deploy your first function app to Azure Container Apps](./Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v2.md)
+- [Deploy your first function app to Azure Container Apps](../v2-functions-on-containerapps-kind=functionapp/Tutorial%20-%20Create%20Function%20App%20on%20Container%20Apps%20v2.md)
 
 ## Related resources
 
