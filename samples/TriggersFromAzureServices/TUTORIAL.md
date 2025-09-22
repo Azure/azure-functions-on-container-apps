@@ -107,7 +107,38 @@ az containerapp create `
   --env-vars AzureWebJobsStorage="$STORAGE_CONN_STRING" FUNCTIONS_WORKER_RUNTIME=node AzureWebJobsFeatureFlags=EnableWorkerIndexing ASPNETCORE_URLS="http://+:8080"
 ```
 
-#### Option B: Complete Command Example
+#### Option B: Using --kind functionapp (Recommended)
+
+For enhanced Azure Functions integration, it's recommended to deploy using the `--kind functionapp` parameter:
+
+```powershell
+# Get ACR credentials
+$acrCred = az acr credential show --name $ACR --query "{username:username,password:passwords[0].value}" -o json | ConvertFrom-Json
+$ACR_USERNAME = $acrCred.username
+$ACR_PASSWORD = $acrCred.password
+
+# Create the container app with function app kind (recommended)
+az containerapp create `
+  --name $APP `
+  --resource-group $RG `
+  --environment $ENV `
+  --image $ACR_IMAGE `
+  --target-port 8080 `
+  --ingress external `
+  --registry-server "$ACR.azurecr.io" `
+  --registry-username $ACR_USERNAME `
+  --registry-password $ACR_PASSWORD `
+  --env-vars AzureWebJobsStorage="$STORAGE_CONN_STRING" FUNCTIONS_WORKER_RUNTIME=node AzureWebJobsFeatureFlags=EnableWorkerIndexing ASPNETCORE_URLS="http://+:8080" `
+  --kind functionapp
+```
+
+**Benefits of using `--kind functionapp`:**
+- Enhanced Azure Functions runtime integration
+- Better function-specific monitoring and metrics  
+- Optimized scaling for Azure Functions workloads
+- Preview feature with dedicated Functions support
+
+#### Option C: Complete Command Example
 
 Here's a complete example of the `az containerapp create` command with all parameters:
 
