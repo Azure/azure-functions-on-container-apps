@@ -1,0 +1,16 @@
+{
+  "name": "triggersfromazureservices",
+  "version": "1.0.0",
+  "description": "Contains Azure Functions that are triggered by various Azure services",
+  "main": "src/functions/blobwithhttp.js",
+  "scripts": {
+    "start": "func start",
+    "build": "npm install"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
