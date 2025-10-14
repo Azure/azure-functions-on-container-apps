@@ -3,3 +3,9 @@ samples/BlobTrigger/.vscode/tasks.json
 samples/BlobTrigger/.vscode/launch.json
 /samples/BlobTrigger/.vscode
 /samples/TriggersFromAzureServices/.vscode
+/samples/TriggersFromAzureServices/node_modules
+/samples/FunctionsWithEventGridTrigger/node_modules
+samples/FunctionsWithEventGridTrigger/.vscode/tasks.json
+samples/FunctionsWithEventGridTrigger/.vscode/settings.json
+samples/FunctionsWithEventGridTrigger/.vscode/launch.json
+samples/FunctionsWithEventGridTrigger/.vscode/extensions.json
