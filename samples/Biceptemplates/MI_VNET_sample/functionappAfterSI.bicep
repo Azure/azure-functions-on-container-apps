@@ -8,7 +8,7 @@ resource functionapp 'Microsoft.Web/sites@2023-01-01' = {
   kind: 'functionapp,linux,container,azurecontainerapps'
   properties: {
     siteConfig: {
-      linuxFxVersion: 'DOCKER|mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0'
+      linuxFxVersion: 'DOCKER|mcr.microsoft.com/k8se/quickstart-functions:latest'
       acrUseManagedIdentityCreds: true
       appSettings: [
         {

@@ -63,7 +63,7 @@ resource functionapp 'Microsoft.Web/sites@2023-01-01' = {
     keyVaultReferenceIdentity: useSystemIdentity ? '': identityResourceId
     managedEnvironmentId: envId
     siteConfig: {
-      linuxFxVersion: 'DOCKER|mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0'
+      linuxFxVersion: 'DOCKER|mcr.microsoft.com/k8se/quickstart-functions:latest'
       acrUseManagedIdentityCreds: !useSystemIdentity
       acrUserManagedIdentityID: useSystemIdentity ? '': identityResourceId
       minimumElasticInstanceCount: 1

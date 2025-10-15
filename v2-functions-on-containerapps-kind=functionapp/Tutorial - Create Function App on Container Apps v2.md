@@ -28,7 +28,7 @@ Deploy a sample HTTP trigger function using Microsoft's demo image:
 az containerapp create --resource-group $RESOURCE_GROUP_NAME \
     --name $CONTAINER_APP_NAME \
     --environment $ENVIRONMENT_NAME \
-    --image mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0 \
+    --image mcr.microsoft.com/k8se/quickstart-functions:latest \
     --ingress external \
     --target-port 80 \
     --kind functionapp \

@@ -17,7 +17,7 @@ param appInsightsName string = functionsContainerAppName
 param location string = resourceGroup().location
 
 @description('Specifies the docker container image to deploy.')
-param containerImage string = 'mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0'
+param containerImage string = 'mcr.microsoft.com/k8se/quickstart-functions:latest'
 
 @description('Specifies the container port.')
 param targetPort int = 80

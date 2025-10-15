@@ -253,7 +253,7 @@ resource functionapp 'Microsoft.Web/sites@2023-01-01' = {
   properties: {
     managedEnvironmentId: use_nfs_mount ? nfsenv.id : smbenv.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0'
+      linuxFxVersion: 'DOCKER|mcr.microsoft.com/k8se/quickstart-functions:latest'
       minimumElasticInstanceCount: 1
       functionAppScaleLimit: 5
       azureStorageAccounts: {
