@@ -66,7 +66,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-02-02-preview' = {
     template: {
       containers: [
         {
-          image: 'mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0'
+          image: 'mcr.microsoft.com/k8se/quickstart-functions:latest'
           name: 'function-container'
           env: envVars
           resources: {

@@ -20,7 +20,7 @@ Before you begin, ensure you have:
 
 If you want to test with a pre-built sample HTTP trigger function, you can use this publicly accessible image:
 ```
-mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0
+mcr.microsoft.com/k8se/quickstart-functions:latest
 ```
 
 For your own images, ensure they are built and pushed to either Docker Hub or Azure Container Registry (ACR) in the format:

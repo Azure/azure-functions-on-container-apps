@@ -31,6 +31,6 @@ Note: This is ignored when accountName is empty, as protocol is not applicable f
 
 ## Updating the image
 
-- This infra deploys the function app using default sample image: `mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0`
+- This infra deploys the function app using default sample image: `mcr.microsoft.com/k8se/quickstart-functions:latest`
 - Sample python function code which reads and writes to the mount path is provided under `code` folder as reference.
 - Build your image for your fn app and push it to an ACR, and then use Portal's Configuration blade to pick an image from your ACR.

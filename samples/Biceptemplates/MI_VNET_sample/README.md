@@ -27,7 +27,7 @@ Note: Each time this template is deployed, new resources get created with random
 
 ## Updating the image
 
-- This project creates the function app using default sample image: `mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0`
+- This project creates the function app using default sample image: `mcr.microsoft.com/k8se/quickstart-functions:latest`
 - To use a private image, push your image to the ACR created above and update the function app config to use the private image. Function app would then pull the image in private acr using MI.
 
 ### Sample steps
@@ -36,8 +36,8 @@ Note: Each time this template is deployed, new resources get created with random
    ```
    az acr import \
      --name <acr name> \
-     --source mcr.microsoft.com/azure-functions/dotnet8-quickstart-demo:1.0 \
-     --image azure-functions/dotnet8-quickstart-demo:1.0
+     --source mcr.microsoft.com/k8se/quickstart-functions:latest \
+     --image k8se/quickstart-functions:latest
    ```
    Verify the image is imported correctly.
 
@@ -49,6 +49,6 @@ Note: Each time this template is deployed, new resources get created with random
       -n <function app name>/config/web \
       --subscription <subscription name> \
       --resource-type 'Microsoft.Web/sites/config' \
-      --set properties.linuxFxVersion="DOCKER|<acr name>.azurecr.io/azure-functions/dotnet8-quickstart-demo:1.0"
+      --set properties.linuxFxVersion="DOCKER|<acr name>.azurecr.io/k8se/quickstart-functions:latest"
    ```
    Verify the linuxFxVersion is updated correctly, in JSON View in Portal. 
