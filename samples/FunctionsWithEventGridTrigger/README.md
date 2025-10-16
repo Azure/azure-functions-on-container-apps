@@ -30,7 +30,7 @@ Watch the complete walkthrough demonstrating EventGrid triggers with Azure Funct
 ## Project Structure
 
 ```
-├── Dockerfile.eventgrid         # Container build configuration
+├── Dockerfile         # Container build configuration
 ├── host.json                   # Azure Functions host configuration
 ├── local.settings.json         # Local development settings (not for production)
 ├── package.json                # Node.js dependencies (points to eventgridwithhttp.js)
@@ -102,7 +102,7 @@ You'll also need to update the storage connection string variable in the script.
 Set-Location "path\to\your\project"
 
 # Build the image using the EventGrid-specific Dockerfile
-docker build -f Dockerfile.eventgrid -t $IMAGE_TAG .
+docker build -f Dockerfile -t $IMAGE_TAG .
 ```
 
 The Dockerfile configures the Azure Functions runtime environment and exposes the application on port 80.
