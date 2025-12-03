@@ -60,9 +60,37 @@ More details on function keys and operations are found here: [Use Azure Function
 
 ## Getting Started with Function Keys
 
-### Step 1: Get Function Keys
+### Step 1: Discover Available Functions
 
-First, retrieve the function keys for your deployed container app:
+First, list all functions in your container app to see what's available:
+
+```bash
+az containerapp function list \
+  --resource-group <your-resource-group> \
+  --name <your-function-app-name>
+```
+
+### Step 2: Get Function Details and Endpoints
+
+Get detailed information about specific functions to see their trigger URLs and configuration:
+
+```bash
+az containerapp function show \
+  --resource-group <your-resource-group> \
+  --name <your-function-app-name> \
+  --function-name <function-name>
+```
+
+This command will show you:
+
+- Function trigger URL
+- Trigger type (HTTP, Timer, etc.)
+- Function configuration
+- Authorization level
+
+### Step 3: Get Function Keys
+
+Retrieve the function keys for authentication:
 
 ```bash
 az containerapp function keys list \
@@ -71,9 +99,9 @@ az containerapp function keys list \
   --key-type hostKey
 ```
 
-### Step 2: Test the Endpoints
+### Step 4: Test the Endpoints
 
-Once you have the function keys, test both endpoints:
+Using the URLs from the function show command and the keys from the previous step, test your endpoints:
 
 **Test anonymous endpoint (no key required):**
 
@@ -87,7 +115,7 @@ curl https://<your-function-app-name>.<your-environment-domain>.azurecontainerap
 curl "https://<your-function-app-name>.<your-environment-domain>.azurecontainerapps.io/api/httpTrigger?code=<your-generated-function-key>"
 ```
 
-### Step 3: Explore Advanced Key Management
+### Step 5: Explore Advanced Key Management
 
 After testing the endpoints, explore additional key management operations:
 
