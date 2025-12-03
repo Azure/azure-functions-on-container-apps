@@ -1,0 +1,16 @@
+{
+  "name": "azure-function-storageaccount",
+  "version": "1.0.0",
+  "description": "Azure Function with function keys stored in Storage Account",
+  "main": "src/functions/httpTrigger.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.0.5455"
+  }
+}
