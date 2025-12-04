@@ -1,0 +1,37 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio / Visual Studio Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+
+# Node modules (if any)
+node_modules/
+
+# Azure Functions
+.azure/
+
+# Local settings (will be copied explicitly)
+# local.settings.json
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore
