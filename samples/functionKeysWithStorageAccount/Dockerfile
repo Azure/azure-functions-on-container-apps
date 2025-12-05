@@ -25,7 +25,6 @@ WORKDIR /home/site/wwwroot
 COPY --from=build /home/site/wwwroot/node_modules ./node_modules
 COPY --from=build /home/site/wwwroot/package*.json ./
 COPY --from=build /home/site/wwwroot/host.json ./
-COPY --from=build /home/site/wwwroot/local.settings.json ./
 COPY --from=build /home/site/wwwroot/src ./src
 
 # Set environment variables for Azure Functions
