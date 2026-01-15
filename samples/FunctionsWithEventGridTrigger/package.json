@@ -8,7 +8,7 @@
     "build": "npm install"
   },
   "dependencies": {
-    "@azure/functions": "^4.0.0"
+    "@azure/functions": "^4.11.0"
   },
   "engines": {
     "node": ">=18.0.0"
